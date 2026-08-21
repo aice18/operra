@@ -1,122 +1,107 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState } from 'react';
+import { useAuth } from './context/AuthContext';
+import { Login } from './pages/Login';
+import { Inventory } from './pages/Inventory';
+import { WorkOrders } from './pages/WorkOrders';
+import { InternalTransfers } from './pages/InternalTransfers';
+import { CustomerOrders } from './pages/CustomerOrders';
+import {
+  Package,
+  ClipboardList,
+  ArrowLeftRight,
+  ShoppingBag,
+  LogOut,
+  Server,
+  UserCheck,
+} from 'lucide-react';
 
-function App() {
-  const [count, setCount] = useState(0)
+export const App: React.FC = () => {
+  const { user, logout, loading } = useAuth();
+  const [activeTab, setActiveTab] = useState<'inventory' | 'work-orders' | 'transfers' | 'orders'>(
+    'inventory'
+  );
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0f172a', color: '#94a3b8' }}>
+        Loading ERP System...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Login />;
+  }
+
+  const roleBadgeClass =
+    user.role === 'ADMIN'
+      ? 'badge-admin'
+      : user.role === 'OPERATIONS'
+      ? 'badge-ops'
+      : 'badge-sales';
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app-container">
+      {/* Sidebar Navigation */}
+      <aside className="sidebar">
+        <div className="sidebar-brand">
+          <Server size={24} />
+          <span>Operations ERP</span>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
+
+        <nav className="nav-menu">
+          <button
+            className={`nav-item ${activeTab === 'inventory' ? 'active' : ''}`}
+            onClick={() => setActiveTab('inventory')}
+          >
+            <Package size={18} /> Inventory
+          </button>
+          <button
+            className={`nav-item ${activeTab === 'work-orders' ? 'active' : ''}`}
+            onClick={() => setActiveTab('work-orders')}
+          >
+            <ClipboardList size={18} /> Work Orders
+          </button>
+          <button
+            className={`nav-item ${activeTab === 'transfers' ? 'active' : ''}`}
+            onClick={() => setActiveTab('transfers')}
+          >
+            <ArrowLeftRight size={18} /> Internal Transfers
+          </button>
+          <button
+            className={`nav-item ${activeTab === 'orders' ? 'active' : ''}`}
+            onClick={() => setActiveTab('orders')}
+          >
+            <ShoppingBag size={18} /> Customer Orders
+          </button>
+        </nav>
+
+        {/* Logged User Info */}
+        <div className="user-profile">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <UserCheck size={18} className="text-muted" />
+            <div className="user-info">
+              <span className="user-name">{user.name}</span>
+              <span className={`badge ${roleBadgeClass}`} style={{ marginTop: '0.2rem' }}>
+                {user.role}
+              </span>
+            </div>
+          </div>
+          <button className="btn-logout" onClick={logout}>
+            <LogOut size={16} /> Sign Out
+          </button>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </aside>
 
-      <div className="ticks"></div>
+      {/* Main Screen Content */}
+      <main className="main-content">
+        {activeTab === 'inventory' && <Inventory />}
+        {activeTab === 'work-orders' && <WorkOrders />}
+        {activeTab === 'transfers' && <InternalTransfers />}
+        {activeTab === 'orders' && <CustomerOrders />}
+      </main>
+    </div>
+  );
+};
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
-}
-
-export default App
+export default App;
