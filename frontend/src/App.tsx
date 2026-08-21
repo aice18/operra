@@ -100,8 +100,16 @@ export const App: React.FC = () => {
       ? 'badge-ops'
       : 'badge-sales';
 
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-theme-active');
+    } else {
+      document.body.classList.remove('dark-theme-active');
+    }
+  }, [darkMode]);
+
   return (
-    <div className="app-container">
+    <div className={`app-container ${darkMode ? 'dark-theme' : ''}`}>
       {/* Left Sidebar Navigation - Fixed & Persistent */}
       <aside className="sidebar">
         {/* Brand Logo */}

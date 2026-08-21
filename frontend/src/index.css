@@ -31,6 +31,7 @@ html, body {
   min-height: 100vh;
   background-color: var(--bg-viewport);
   color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -52,6 +53,7 @@ body {
   box-shadow: 0 25px 60px rgba(124, 58, 237, 0.18);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
 }
 
 /* Sidebar */
@@ -65,6 +67,7 @@ body {
   padding: 1.5rem 1.1rem;
   height: 100%;
   overflow-y: auto;
+  transition: all 0.3s ease;
 }
 
 .sidebar-brand {
@@ -156,13 +159,14 @@ body {
 /* Main Screen - Smooth Custom Scrollbar */
 .main-content {
   flex: 1;
-  min-width: 0; /* Prevents flex overflow */
+  min-width: 0;
   height: 100%;
   background: #f8fafc;
   padding: 1.75rem 2.25rem;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  transition: background-color 0.3s ease;
 }
 
 /* Elegant Custom Scrollbar */
@@ -404,4 +408,138 @@ input:focus, select:focus {
   margin-bottom: 1.25rem;
   font-size: 0.85rem;
   font-weight: 600;
+}
+
+/* ==========================================================================
+   Dark Theme Rules (Crisp White Text & Glowing Accents)
+   ========================================================================== */
+.dark-theme {
+  --bg-viewport: #090417;
+  --bg-app: #090d16;
+  --bg-sidebar: #0f172a;
+  --bg-card: #1e293b;
+  --bg-input: #0f172a;
+  --text-main: #ffffff;
+  --text-muted: #cbd5e1;
+  --accent-purple: #8b5cf6;
+  --border-color: #334155;
+  --border-hover: #475569;
+}
+
+.dark-theme-active body {
+  background-color: #090417 !important;
+}
+
+.dark-theme .app-container {
+  background: #090d16 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
+}
+
+.dark-theme .sidebar {
+  background-color: #0f172a !important;
+  border-right-color: #1e293b !important;
+}
+
+.dark-theme .sidebar-brand span {
+  color: #ffffff !important;
+}
+
+.dark-theme .nav-item {
+  color: #cbd5e1 !important;
+}
+
+.dark-theme .nav-item:hover {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .nav-item.active {
+  background: #8b5cf6 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5) !important;
+}
+
+.dark-theme .main-content {
+  background: #090d16 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-theme .card:hover {
+  border-color: #475569 !important;
+}
+
+.dark-theme h1,
+.dark-theme h2,
+.dark-theme h3,
+.dark-theme .user-name,
+.dark-theme span,
+.dark-theme div {
+  color: #ffffff !important;
+}
+
+.dark-theme p,
+.dark-theme label,
+.dark-theme .text-muted,
+.dark-theme select option {
+  color: #cbd5e1 !important;
+}
+
+.dark-theme .btn-secondary {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .btn-secondary:hover {
+  background: #334155 !important;
+  border-color: #475569 !important;
+}
+
+.dark-theme .table-container {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+.dark-theme table {
+  background: #1e293b !important;
+}
+
+.dark-theme th {
+  background-color: #0f172a !important;
+  color: #94a3b8 !important;
+  border-bottom-color: #334155 !important;
+}
+
+.dark-theme td {
+  border-bottom-color: #334155 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme tr:hover {
+  background-color: #334155 !important;
+}
+
+.dark-theme input,
+.dark-theme select {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme code {
+  background: #0f172a !important;
+  color: #a78bfa !important;
+}
+
+.dark-theme .modal {
+  background: #1e293b !important;
+  border: 1px solid #334155;
+  color: #ffffff !important;
 }
