@@ -3,6 +3,8 @@ import axios from 'axios';
 import { ClipboardList, Plus, AlertTriangle, CheckCircle2, RefreshCw, ArrowUpRight, TrendingUp, TrendingDown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+import { API_BASE_URL } from '../config/api';
+
 export const WorkOrders: React.FC = () => {
   const { user } = useAuth();
   const [workOrders, setWorkOrders] = useState<any[]>([]);
@@ -20,9 +22,9 @@ export const WorkOrders: React.FC = () => {
     setLoading(true);
     try {
       const [woRes, locRes, itemRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/work-orders'),
-        axios.get('http://localhost:5000/api/locations'),
-        axios.get('http://localhost:5000/api/items'),
+        axios.get(`${API_BASE_URL}/api/work-orders`),
+        axios.get(`${API_BASE_URL}/api/locations`),
+        axios.get(`${API_BASE_URL}/api/items`),
       ]);
       setWorkOrders(woRes.data);
       setLocations(locRes.data);
@@ -42,7 +44,7 @@ export const WorkOrders: React.FC = () => {
     e.preventDefault();
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/work-orders', {
+      await axios.post(`${API_BASE_URL}/api/work-orders`, {
         locationId: selectedLocation,
         itemId: selectedItem,
         requiredQuantity: requiredQty,
@@ -57,7 +59,7 @@ export const WorkOrders: React.FC = () => {
 
   const updateStatus = async (id: string, status: string) => {
     try {
-      await axios.patch(`http://localhost:5000/api/work-orders/${id}/status`, { status });
+      await axios.patch(`${API_BASE_URL}/api/work-orders/${id}/status`, { status });
       fetchWorkOrders();
     } catch (err: any) {
       setError(err.response?.data?.message || 'Status update failed');

@@ -4,10 +4,35 @@ A production-oriented, full-stack Operations ERP built with **Node.js, TypeScrip
 
 ---
 
+## 🌐 Live Deployments
+- **Frontend App (Vercel)**: [https://frontend-two-alpha-19.vercel.app/](https://frontend-two-alpha-19.vercel.app/)
+- **Backend API (Render)**: [https://operra-0cij.onrender.com](https://operra-0cij.onrender.com)
+- **API Health Check**: [https://operra-0cij.onrender.com/health](https://operra-0cij.onrender.com/health)
+- **Swagger API Docs**: [https://operra-0cij.onrender.com/api-docs](https://operra-0cij.onrender.com/api-docs)
+
+---
+
+## 🔐 Environment Variables
+
+### Frontend (`frontend/.env`)
+```env
+VITE_API_URL="https://operra-0cij.onrender.com"
+```
+
+### Backend (`backend/.env`)
+```env
+PORT=5000
+DATABASE_URL="postgresql://postgres:operraayush@db.teooyzzaacnbhftgtakc.supabase.co:5432/postgres"
+JWT_SECRET="super-secret-jwt-key-for-operations-erp-2026"
+NODE_ENV="production"
+```
+
+---
+
 ## 🌟 Tech Stack
 - **Frontend**: React (Vite + TypeScript), Lucide Icons, Custom CSS Dark Theme System
 - **Backend**: Node.js, Express, TypeScript
-- **Database & ORM**: Prisma ORM with SQLite (supports PostgreSQL with zero schema changes)
+- **Database & ORM**: Prisma ORM with SQLite/PostgreSQL
 - **Authentication**: JWT Auth & Role-Based Access Control (`ADMIN`, `OPERATIONS`, `SALES`)
 - **Testing**: Jest + Supertest (Automated tests for mandatory business scenarios 1 to 5)
 

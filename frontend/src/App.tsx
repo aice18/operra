@@ -29,6 +29,8 @@ import {
   RefreshCw
 } from 'lucide-react';
 
+import { API_BASE_URL } from './config/api';
+
 export const App: React.FC = () => {
   const { user, logout, loading: authLoading } = useAuth();
   const [showLanding, setShowLanding] = useState<boolean>(true);
@@ -49,10 +51,10 @@ export const App: React.FC = () => {
     setDashboardLoading(true);
     try {
       const [invRes, woRes, transRes, orderRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/inventory'),
-        axios.get('http://localhost:5000/api/work-orders'),
-        axios.get('http://localhost:5000/api/transfers'),
-        axios.get('http://localhost:5000/api/customer-orders'),
+        axios.get(`${API_BASE_URL}/api/inventory`),
+        axios.get(`${API_BASE_URL}/api/work-orders`),
+        axios.get(`${API_BASE_URL}/api/transfers`),
+        axios.get(`${API_BASE_URL}/api/customer-orders`),
       ]);
       setInventories(invRes.data);
       setWorkOrders(woRes.data);

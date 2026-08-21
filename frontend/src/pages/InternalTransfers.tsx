@@ -3,6 +3,8 @@ import axios from 'axios';
 import { ArrowLeftRight, Plus, Truck, CheckCircle2, RefreshCw, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+import { API_BASE_URL } from '../config/api';
+
 export const InternalTransfers: React.FC = () => {
   const { user } = useAuth();
   const [transfers, setTransfers] = useState<any[]>([]);
@@ -21,9 +23,9 @@ export const InternalTransfers: React.FC = () => {
     setLoading(true);
     try {
       const [transRes, locRes, itemRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/transfers'),
-        axios.get('http://localhost:5000/api/locations'),
-        axios.get('http://localhost:5000/api/items'),
+        axios.get(`${API_BASE_URL}/api/transfers`),
+        axios.get(`${API_BASE_URL}/api/locations`),
+        axios.get(`${API_BASE_URL}/api/items`),
       ]);
       setTransfers(transRes.data);
       setLocations(locRes.data);
@@ -43,7 +45,7 @@ export const InternalTransfers: React.FC = () => {
     e.preventDefault();
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/transfers', {
+      await axios.post(`${API_BASE_URL}/api/transfers`, {
         sourceLocationId: sourceLoc,
         destinationLocationId: destLoc,
         itemId: selectedItem,
@@ -59,7 +61,7 @@ export const InternalTransfers: React.FC = () => {
   const handleDispatch = async (id: string) => {
     setError('');
     try {
-      await axios.post(`http://localhost:5000/api/transfers/${id}/dispatch`);
+      await axios.post(`${API_BASE_URL}/api/transfers/${id}/dispatch`);
       fetchTransfers();
     } catch (err: any) {
       setError(err.response?.data?.message || 'Dispatch failed');
@@ -69,7 +71,7 @@ export const InternalTransfers: React.FC = () => {
   const handleReceive = async (id: string) => {
     setError('');
     try {
-      await axios.post(`http://localhost:5000/api/transfers/${id}/receive`);
+      await axios.post(`${API_BASE_URL}/api/transfers/${id}/receive`);
       fetchTransfers();
     } catch (err: any) {
       setError(err.response?.data?.message || 'Receipt failed');

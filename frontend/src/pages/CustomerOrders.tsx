@@ -3,6 +3,8 @@ import axios from 'axios';
 import { ShoppingBag, Plus, ShieldCheck, RefreshCw, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+import { API_BASE_URL } from '../config/api';
+
 export const CustomerOrders: React.FC = () => {
   const { user } = useAuth();
   const [orders, setOrders] = useState<any[]>([]);
@@ -20,9 +22,9 @@ export const CustomerOrders: React.FC = () => {
     setLoading(true);
     try {
       const [ordRes, locRes, itemRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/customer-orders'),
-        axios.get('http://localhost:5000/api/locations'),
-        axios.get('http://localhost:5000/api/items'),
+        axios.get(`${API_BASE_URL}/api/customer-orders`),
+        axios.get(`${API_BASE_URL}/api/locations`),
+        axios.get(`${API_BASE_URL}/api/items`),
       ]);
       setOrders(ordRes.data);
       setLocations(locRes.data);
@@ -42,7 +44,7 @@ export const CustomerOrders: React.FC = () => {
     e.preventDefault();
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/customer-orders', {
+      await axios.post(`${API_BASE_URL}/api/customer-orders`, {
         items: [
           {
             locationId: selectedLocation,

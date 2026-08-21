@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Package, Plus, RefreshCw, Layers, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+import { API_BASE_URL } from '../config/api';
+
 export const Inventory: React.FC = () => {
   const { user } = useAuth();
   const [inventories, setInventories] = useState<any[]>([]);
@@ -22,9 +24,9 @@ export const Inventory: React.FC = () => {
     setLoading(true);
     try {
       const [invRes, locRes, itemRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/inventory'),
-        axios.get('http://localhost:5000/api/locations'),
-        axios.get('http://localhost:5000/api/items'),
+        axios.get(`${API_BASE_URL}/api/inventory`),
+        axios.get(`${API_BASE_URL}/api/locations`),
+        axios.get(`${API_BASE_URL}/api/items`),
       ]);
       setInventories(invRes.data);
       setLocations(locRes.data);
@@ -44,7 +46,7 @@ export const Inventory: React.FC = () => {
     e.preventDefault();
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/inventory/adjust', {
+      await axios.post(`${API_BASE_URL}/api/inventory/adjust`, {
         locationId: selectedLocation,
         itemId: selectedItem,
         batchNumber,
