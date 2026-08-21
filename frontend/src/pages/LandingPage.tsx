@@ -1,5 +1,20 @@
 import React from 'react';
-import { RefreshCw, ShieldCheck } from 'lucide-react';
+import {
+  Boxes,
+  ClipboardList,
+  ArrowLeftRight,
+  ShoppingBag,
+  ShieldCheck,
+  BarChart3,
+  CheckCircle2,
+  ArrowRight,
+  Database,
+  Lock,
+  ChevronRight,
+  Sparkles,
+  Activity,
+  Workflow
+} from 'lucide-react';
 
 interface LandingPageProps {
   onGoToLogin: () => void;
@@ -15,39 +30,39 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
       position: 'relative',
       overflowX: 'hidden'
     }}>
-      {/* Background Ambient Glows */}
+      {/* Dynamic Background Ambient Glows */}
       <div style={{
         position: 'absolute',
-        top: '-100px',
-        left: '-100px',
-        width: '500px',
-        height: '500px',
+        top: '-150px',
+        left: '-150px',
+        width: '650px',
+        height: '650px',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, rgba(13, 6, 32, 0) 70%)',
+        background: 'radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, rgba(9, 4, 23, 0) 70%)',
         pointerEvents: 'none'
       }} />
       <div style={{
         position: 'absolute',
-        top: '400px',
-        right: '-150px',
+        top: '350px',
+        right: '-180px',
+        width: '700px',
+        height: '700px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, rgba(9, 4, 23, 0) 70%)',
+        pointerEvents: 'none'
+      }} />
+      <div style={{
+        position: 'absolute',
+        top: '1100px',
+        left: '-120px',
         width: '600px',
         height: '600px',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(13, 6, 32, 0) 70%)',
-        pointerEvents: 'none'
-      }} />
-      <div style={{
-        position: 'absolute',
-        top: '1200px',
-        left: '-100px',
-        width: '550px',
-        height: '550px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(13, 6, 32, 0) 70%)',
+        background: 'radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, rgba(9, 4, 23, 0) 70%)',
         pointerEvents: 'none'
       }} />
 
-      {/* Top Header / Navigation Bar */}
+      {/* Navigation Header */}
       <header style={{
         display: 'flex',
         alignItems: 'center',
@@ -59,41 +74,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
         zIndex: 10
       }}>
         {/* Brand Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', cursor: 'pointer' }} onClick={onGoToLogin}>
           <div style={{
             width: '42px',
             height: '42px',
-            borderRadius: '50%',
+            borderRadius: '0.75rem',
             background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 15px rgba(168, 85, 247, 0.6)',
-            border: '2px solid rgba(255, 255, 255, 0.2)'
+            boxShadow: '0 0 20px rgba(168, 85, 247, 0.5)',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
           }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="12 2 2 7 12 12 22 7 12 2" />
-              <polyline points="2 17 12 22 22 17" />
-              <polyline points="2 12 12 17 22 12" />
-            </svg>
+            <Boxes size={22} color="#ffffff" />
           </div>
-          <span style={{ fontWeight: 800, fontSize: '1.5rem', color: '#ffffff', letterSpacing: '-0.5px' }}>Operra</span>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontWeight: 800, fontSize: '1.45rem', color: '#ffffff', letterSpacing: '-0.5px', lineHeight: 1.1 }}>Operra</span>
+            <span style={{ fontSize: '0.65rem', color: '#a855f7', fontWeight: 700, letterSpacing: '1px' }}>OPERATIONS ERP</span>
+          </div>
         </div>
 
-        {/* Center Nav Links */}
+        {/* Navigation Links */}
         <nav style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
-          <a href="#home" style={{ color: '#ffffff', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 600 }}>Home</a>
-          <a href="#markets" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>NFT Markets</a>
-          <a href="#shop" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>Shop</a>
-          <a href="#about" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>About Us</a>
+          <a href="#overview" style={{ color: '#ffffff', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 600 }}>Overview</a>
+          <a href="#inventory" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>Inventory</a>
+          <a href="#work-orders" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>Work Orders</a>
+          <a href="#transfers" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>Stock Transfers</a>
+          <a href="#security" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>ACID Safety</a>
         </nav>
 
-        {/* Header Right CTA Button */}
+        {/* CTA Login Button */}
         <button
           onClick={onGoToLogin}
           style={{
-            padding: '0.7rem 1.8rem',
-            borderRadius: '0.5rem',
+            padding: '0.75rem 1.8rem',
+            borderRadius: '0.6rem',
             background: 'linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #9333ea 100%)',
             color: '#ffffff',
             border: 'none',
@@ -101,10 +116,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
             fontSize: '0.95rem',
             cursor: 'pointer',
             boxShadow: '0 4px 20px rgba(124, 58, 237, 0.5)',
-            transition: 'all 0.25s ease'
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            transition: 'transform 0.2s ease, boxShadow 0.2s ease'
           }}
         >
-          Explore Now
+          Access ERP Portal <ChevronRight size={18} />
         </button>
       </header>
 
@@ -112,9 +130,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
       <section style={{
         maxWidth: '1350px',
         margin: '0 auto',
-        padding: '3rem 4rem 4rem',
+        padding: '3.5rem 4rem 4rem',
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        gridTemplateColumns: '1.1fr 0.9fr',
         gap: '4rem',
         alignItems: 'center',
         position: 'relative',
@@ -122,33 +140,50 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
       }}>
         {/* Left Column Content */}
         <div>
+          {/* Top Pill Badge */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.4rem 1rem',
+            borderRadius: '9999px',
+            background: 'rgba(139, 92, 246, 0.12)',
+            border: '1px solid rgba(168, 85, 247, 0.3)',
+            color: '#c084fc',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            marginBottom: '1.5rem'
+          }}>
+            <Sparkles size={16} /> Enterprise Mini Operations ERP System
+          </div>
+
           <h1 style={{
-            fontSize: '3.75rem',
+            fontSize: '3.6rem',
             fontWeight: 900,
             lineHeight: 1.15,
             letterSpacing: '-1px',
             marginBottom: '1.25rem',
             color: '#ffffff'
           }}>
-            Explore The Largest<br />
+            Streamline Multi-Location<br />
             <span style={{
               background: 'linear-gradient(135deg, #d8b4fe 0%, #c084fc 40%, #e879f9 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               textShadow: '0 0 30px rgba(192, 132, 252, 0.4)'
             }}>
-              NFT
-            </span> Marketplaces
+              Operations & Inventory
+            </span> Control
           </h1>
 
           <p style={{
             fontSize: '1.1rem',
             color: '#94a3b8',
             marginBottom: '2.5rem',
-            maxWidth: '480px',
-            lineHeight: 1.6
+            maxWidth: '520px',
+            lineHeight: 1.65
           }}>
-            Buy, Sell & Trade Cryptocurrency Easily and Securely with Operra's ACID-Protected Enterprise Operations Platform.
+            Seamlessly orchestrate inventory tracking, production work orders, automated shortage calculations, inter-warehouse stock transfers, and ACID-guaranteed customer reservations.
           </p>
 
           {/* Action Buttons */}
@@ -156,8 +191,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
             <button
               onClick={onGoToLogin}
               style={{
-                padding: '0.85rem 2.2rem',
-                borderRadius: '0.5rem',
+                padding: '0.9rem 2.2rem',
+                borderRadius: '0.6rem',
                 background: 'linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #9333ea 100%)',
                 color: '#ffffff',
                 border: 'none',
@@ -165,114 +200,123 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
                 fontSize: '1rem',
                 cursor: 'pointer',
                 boxShadow: '0 6px 25px rgba(124, 58, 237, 0.55)',
-                transition: 'all 0.25s ease'
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.6rem'
               }}
             >
-              Connect Wallet
+              Launch Operations Hub <ArrowRight size={18} />
             </button>
 
             <button
               onClick={onGoToLogin}
               style={{
-                padding: '0.85rem 2rem',
-                borderRadius: '0.5rem',
+                padding: '0.9rem 2rem',
+                borderRadius: '0.6rem',
                 background: 'rgba(124, 58, 237, 0.08)',
                 color: '#ffffff',
                 border: '1px solid rgba(168, 85, 247, 0.4)',
                 fontWeight: 600,
                 fontSize: '1rem',
                 cursor: 'pointer',
-                transition: 'all 0.25s ease'
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem'
               }}
             >
-              Learn More
+              <Workflow size={18} /> Explore Module Flow
             </button>
           </div>
 
-          {/* Our Members Avatar Pile */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ fontSize: '0.95rem', fontWeight: 600, color: '#ffffff' }}>Our Members</span>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #f43f5e, #fb7185)', border: '2px solid #090417', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', marginLeft: '0' }}>👩‍💻</div>
-              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #06b6d4, #38bdf8)', border: '2px solid #090417', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', marginLeft: '-10px' }}>👨‍💻</div>
-              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #a855f7, #c084fc)', border: '2px solid #090417', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', marginLeft: '-10px' }}>🙋‍♀️</div>
-              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #f59e0b, #fbbf24)', border: '2px solid #090417', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', marginLeft: '-10px' }}>🧔</div>
+          {/* Supported Role Badges */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Role-Based Access:</span>
+            <div style={{ display: 'flex', gap: '0.6rem' }}>
+              <span className="badge badge-admin">Admin</span>
+              <span className="badge badge-ops">Operations User</span>
+              <span className="badge badge-sales">Sales User</span>
             </div>
           </div>
         </div>
 
-        {/* Right Column: 3D Isometric Floating Ethereum Platform Graphic */}
+        {/* Right Column: Interactive ERP Live Flow Dashboard Mockup */}
         <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
-          <svg width="480" height="480" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="purpleGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#9333ea" />
-                <stop offset="100%" stopColor="#4c1d95" />
-              </linearGradient>
-              <linearGradient id="purpleGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#c084fc" />
-                <stop offset="100%" stopColor="#7c3aed" />
-              </linearGradient>
-              <linearGradient id="cyanGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#38bdf8" />
-                <stop offset="100%" stopColor="#0284c7" />
-              </linearGradient>
-              <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="15" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-              </filter>
-            </defs>
+          <div style={{
+            width: '100%',
+            maxWidth: '520px',
+            background: 'rgba(23, 14, 45, 0.85)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(168, 85, 247, 0.35)',
+            borderRadius: '1.25rem',
+            padding: '1.75rem',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(124, 58, 237, 0.25)',
+            position: 'relative'
+          }}>
+            {/* Mock Header Bar */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid rgba(139, 92, 246, 0.2)', paddingBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Activity size={18} color="#06b6d4" />
+                <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#ffffff' }}>Live Stock Engine</span>
+              </div>
+              <span style={{ fontSize: '0.75rem', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', border: '1px solid rgba(16, 185, 129, 0.4)', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontWeight: 600 }}>
+                ACID Verified
+              </span>
+            </div>
 
-            {/* Glowing Base Halo */}
-            <ellipse cx="250" cy="380" rx="190" ry="60" fill="url(#purpleGrad1)" opacity="0.35" filter="url(#glow)" />
-            <ellipse cx="250" cy="380" rx="140" ry="40" fill="#7c3aed" opacity="0.25" />
+            {/* Metric Display Box: Physical - Reserved = Available */}
+            <div style={{
+              background: 'rgba(14, 7, 36, 0.9)',
+              borderRadius: '0.85rem',
+              padding: '1.25rem',
+              border: '1px solid rgba(139, 92, 246, 0.25)',
+              marginBottom: '1.25rem'
+            }}>
+              <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.5rem', fontWeight: 600 }}>
+                ITEM: High-Grade Industrial Steel
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', textAlign: 'center' }}>
+                <div style={{ background: 'rgba(56, 189, 248, 0.1)', padding: '0.75rem 0.5rem', borderRadius: '0.5rem', border: '1px solid rgba(56, 189, 248, 0.25)' }}>
+                  <div style={{ fontSize: '0.7rem', color: '#38bdf8', fontWeight: 700, textTransform: 'uppercase' }}>PHYSICAL</div>
+                  <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#ffffff' }}>100</div>
+                </div>
+                <div style={{ background: 'rgba(245, 158, 11, 0.1)', padding: '0.75rem 0.5rem', borderRadius: '0.5rem', border: '1px solid rgba(245, 158, 11, 0.25)' }}>
+                  <div style={{ fontSize: '0.7rem', color: '#fbbf24', fontWeight: 700 }}>RESERVED</div>
+                  <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#ffffff' }}>30</div>
+                </div>
+                <div style={{ background: 'rgba(168, 85, 247, 0.15)', padding: '0.75rem 0.5rem', borderRadius: '0.5rem', border: '1px solid rgba(168, 85, 247, 0.35)' }}>
+                  <div style={{ fontSize: '0.7rem', color: '#c084fc', fontWeight: 700 }}>AVAILABLE</div>
+                  <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#a855f7' }}>70</div>
+                </div>
+              </div>
+            </div>
 
-            {/* Perspective Circuit Rays */}
-            <path d="M100 390 L250 430 L400 390" stroke="#7c3aed" strokeWidth="2" strokeDasharray="4 4" opacity="0.6" />
-            <path d="M130 360 L250 400 L370 360" stroke="#a855f7" strokeWidth="2" opacity="0.4" />
+            {/* Work Order Shortage Widget */}
+            <div style={{
+              background: 'rgba(14, 7, 36, 0.9)',
+              borderRadius: '0.85rem',
+              padding: '1.25rem',
+              border: '1px solid rgba(139, 92, 246, 0.25)'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>Work Order #WO-8041 Shortage</span>
+                <span style={{ fontSize: '0.75rem', color: '#ef4444', fontWeight: 700, background: 'rgba(239,68,68,0.15)', padding: '0.2rem 0.5rem', borderRadius: '0.35rem' }}>Shortage: 40</span>
+              </div>
 
-            {/* Isometric Hexagonal Base Stack */}
-            {/* Bottom Base */}
-            <path d="M110 260 L250 190 L390 260 L390 290 L250 360 L110 290 Z" fill="#2e1065" stroke="#7c3aed" strokeWidth="3" />
-            {/* Side 1 */}
-            <path d="M110 290 L250 360 L250 380 L110 310 Z" fill="#1e1b4b" stroke="#6d28d9" strokeWidth="2" />
-            {/* Side 2 */}
-            <path d="M250 360 L390 290 L390 310 L250 380 Z" fill="#3b0764" stroke="#6d28d9" strokeWidth="2" />
+              {/* Progress Bar */}
+              <div style={{ width: '100%', height: '8px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '4px', overflow: 'hidden', marginBottom: '0.75rem' }}>
+                <div style={{ width: '60%', height: '100%', background: 'linear-gradient(90deg, #a855f7, #06b6d4)' }} />
+              </div>
 
-            {/* Main Glowing Hexagon Top */}
-            <path d="M125 250 L250 185 L375 250 L250 315 Z" fill="url(#purpleGrad1)" stroke="#a855f7" strokeWidth="4" />
-            <path d="M140 250 L250 195 L360 250 L250 305 Z" fill="#4c1d95" opacity="0.8" />
-
-            {/* "NFT" 3D Isometric Text Block on Platform */}
-            <g transform="translate(195, 215)">
-              <rect x="0" y="0" width="110" height="40" rx="8" fill="url(#purpleGrad2)" stroke="#ffffff" strokeWidth="2" opacity="0.9" />
-              <text x="55" y="27" fill="#ffffff" fontSize="22" fontWeight="900" textAnchor="middle" letterSpacing="3">NFT</text>
-            </g>
-
-            {/* 3D Floating Diamond / Ethereum Crystal on Top */}
-            <g transform="translate(250, 110)">
-              {/* Top Facet Left */}
-              <polygon points="0,-75 -40,-10 0,10" fill="#e9d5ff" opacity="0.9" />
-              {/* Top Facet Right */}
-              <polygon points="0,-75 40,-10 0,10" fill="#c084fc" opacity="0.95" />
-              {/* Bottom Facet Left */}
-              <polygon points="0,10 -40,-10 0,65" fill="#a855f7" opacity="0.85" />
-              {/* Bottom Facet Right */}
-              <polygon points="0,10 40,-10 0,65" fill="#7c3aed" opacity="0.9" />
-              {/* Center Beam Light Glow */}
-              <line x1="0" y1="-75" x2="0" y2="65" stroke="#ffffff" strokeWidth="2" opacity="0.7" />
-            </g>
-
-            {/* Floating Sparkles & Neon Dots */}
-            <circle cx="100" cy="180" r="4" fill="#38bdf8" filter="url(#glow)" />
-            <circle cx="410" cy="190" r="5" fill="#c084fc" filter="url(#glow)" />
-            <circle cx="380" cy="120" r="3" fill="#ffffff" />
-            <circle cx="120" cy="330" r="3" fill="#a855f7" />
-          </svg>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#94a3b8' }}>
+                <span>Required Material: 100</span>
+                <span>Available at Location: 60</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Section 2: "Secure & Private" / 3 Card Grid */}
+      {/* Section 2: Core Modules Pipeline */}
       <section style={{
         maxWidth: '1350px',
         margin: '2rem auto 6rem',
@@ -280,186 +324,169 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
         position: 'relative',
         zIndex: 5
       }}>
-        {/* Section Header */}
+        {/* Section Title */}
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.5rem' }}>
-            Secure & Private
+            Complete ERP Operations Lifecycle
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: '1.05rem' }}>
-            24/7 Dedicated Support Team
+          <p style={{ color: '#94a3b8', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto' }}>
+            Built specifically to solve multi-location warehouse tracking, production material shortage logic, and transactional stock safety.
           </p>
         </div>
 
-        {/* 3 Cards Container */}
+        {/* 4 Cards Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '2rem'
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '1.5rem'
         }}>
-          {/* Card 1: Invest in crypto */}
+          {/* Card 1: Inventory Management */}
           <div style={{
             background: 'rgba(23, 14, 45, 0.65)',
             backdropFilter: 'blur(16px)',
             border: '1px solid rgba(139, 92, 246, 0.2)',
             borderRadius: '1rem',
-            padding: '2.5rem 2rem',
-            textAlign: 'center',
-            position: 'relative',
+            padding: '2rem 1.5rem',
+            textAlign: 'left',
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            transition: 'all 0.3s ease'
+            flexDirection: 'column'
           }}>
-            {/* Circular Gold Icon Header */}
             <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '50%',
+              width: '50px',
+              height: '50px',
+              borderRadius: '0.75rem',
+              background: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#ffffff',
+              boxShadow: '0 0 20px rgba(6, 182, 212, 0.4)',
+              marginBottom: '1.25rem'
+            }}>
+              <Boxes size={24} />
+            </div>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.75rem' }}>
+              1. Inventory Tracking
+            </h3>
+            <p style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>
+              Real-time calculation of Physical, Reserved, and Available stock across multiple warehouse locations and batches.
+            </p>
+            <span style={{ color: '#38bdf8', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem', cursor: 'pointer' }} onClick={onGoToLogin}>
+              Explore Inventory →
+            </span>
+          </div>
+
+          {/* Card 2: Work Orders */}
+          <div style={{
+            background: 'rgba(23, 14, 45, 0.65)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid rgba(139, 92, 246, 0.2)',
+            borderRadius: '1rem',
+            padding: '2rem 1.5rem',
+            textAlign: 'left',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <div style={{
+              width: '50px',
+              height: '50px',
+              borderRadius: '0.75rem',
               background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
-              fontWeight: 900,
-              fontSize: '1.5rem',
-              boxShadow: '0 0 20px rgba(245, 158, 11, 0.5)',
-              marginBottom: '1.5rem'
+              boxShadow: '0 0 20px rgba(245, 158, 11, 0.4)',
+              marginBottom: '1.25rem'
             }}>
-              ₿
+              <ClipboardList size={24} />
             </div>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem' }}>
-              Invest in crypto
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.75rem' }}>
+              2. Work Order Check
             </h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1.75rem', flex: 1 }}>
-              Invest in crypto anytime, anywhere with our safe, secure, and easy to use online platform.
+            <p style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>
+              Automated material shortage computation (`Shortage = Required - Available`). Assign production tasks efficiently.
             </p>
-            <button
-              onClick={onGoToLogin}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#c084fc',
-                fontWeight: 600,
-                fontSize: '0.9rem',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem'
-              }}
-            >
-              Get Started →
-            </button>
+            <span style={{ color: '#fbbf24', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem', cursor: 'pointer' }} onClick={onGoToLogin}>
+              Check Work Orders →
+            </span>
           </div>
 
-          {/* Card 2: Fast Transaction */}
+          {/* Card 3: Internal Stock Transfer */}
           <div style={{
             background: 'rgba(23, 14, 45, 0.65)',
             backdropFilter: 'blur(16px)',
             border: '1px solid rgba(139, 92, 246, 0.2)',
             borderRadius: '1rem',
-            padding: '2.5rem 2rem',
-            textAlign: 'center',
-            position: 'relative',
+            padding: '2rem 1.5rem',
+            textAlign: 'left',
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            transition: 'all 0.3s ease'
+            flexDirection: 'column'
           }}>
-            {/* Circular Purple Icon Header */}
             <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '50%',
+              width: '50px',
+              height: '50px',
+              borderRadius: '0.75rem',
               background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
-              boxShadow: '0 0 20px rgba(168, 85, 247, 0.5)',
-              marginBottom: '1.5rem'
+              boxShadow: '0 0 20px rgba(168, 85, 247, 0.4)',
+              marginBottom: '1.25rem'
             }}>
-              <RefreshCw size={26} />
+              <ArrowLeftRight size={24} />
             </div>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem' }}>
-              Fast Transaction
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.75rem' }}>
+              3. Internal Transfers
             </h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1.75rem', flex: 1 }}>
-              Invest in cryptocurrency with our secure and easy-to-use online platform. With 24/7 access to full service customer support, you can trade with confidence.
+            <p style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>
+              Strict 3-stage transfer lifecycle (`Requested → Dispatched → Received`) preventing duplicate receipts and invalid stock leaks.
             </p>
-            <button
-              onClick={onGoToLogin}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#c084fc',
-                fontWeight: 600,
-                fontSize: '0.9rem',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem'
-              }}
-            >
-              Get Started →
-            </button>
+            <span style={{ color: '#c084fc', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem', cursor: 'pointer' }} onClick={onGoToLogin}>
+              Manage Transfers →
+            </span>
           </div>
 
-          {/* Card 3: Secure */}
+          {/* Card 4: Customer Order Reservations */}
           <div style={{
             background: 'rgba(23, 14, 45, 0.65)',
             backdropFilter: 'blur(16px)',
             border: '1px solid rgba(139, 92, 246, 0.2)',
             borderRadius: '1rem',
-            padding: '2.5rem 2rem',
-            textAlign: 'center',
-            position: 'relative',
+            padding: '2rem 1.5rem',
+            textAlign: 'left',
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            transition: 'all 0.3s ease'
+            flexDirection: 'column'
           }}>
-            {/* Circular Red/Pink Icon Header */}
             <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+              width: '50px',
+              height: '50px',
+              borderRadius: '0.75rem',
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
-              boxShadow: '0 0 20px rgba(239, 68, 68, 0.5)',
-              marginBottom: '1.5rem'
+              boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)',
+              marginBottom: '1.25rem'
             }}>
-              <ShieldCheck size={26} />
+              <ShoppingBag size={24} />
             </div>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem' }}>
-              Secure
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.75rem' }}>
+              4. Sales Reservations
             </h3>
-            <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1.75rem', flex: 1 }}>
-              Gain access to a variety of digital assets with just a few clicks. Our intuitive platform makes it easy to buy, sell, and store your cryptocurrency.
+            <p style={{ color: '#94a3b8', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.5rem', flex: 1 }}>
+              Sales user stock reservation locks preventing over-booking and race conditions via database-level transaction locks.
             </p>
-            <button
-              onClick={onGoToLogin}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#c084fc',
-                fontWeight: 600,
-                fontSize: '0.9rem',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem'
-              }}
-            >
-              Start Now →
-            </button>
+            <span style={{ color: '#34d399', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem', cursor: 'pointer' }} onClick={onGoToLogin}>
+              Reserve Stock →
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Section 3: "Trade with confidence with **our platform** and easy to use." */}
+      {/* Section 3: Technical Highlights & ACID Protection */}
       <section style={{
         maxWidth: '1350px',
         margin: '0 auto 6rem',
@@ -474,145 +501,120 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
         {/* Left Column Content */}
         <div>
           <h2 style={{
-            fontSize: '2.75rem',
+            fontSize: '2.5rem',
             fontWeight: 800,
             lineHeight: 1.25,
             color: '#ffffff',
             marginBottom: '1.5rem'
           }}>
-            Trade with confidence with<br />
+            Built for Extreme Precision,<br />
             <span style={{ color: '#a855f7', textShadow: '0 0 20px rgba(168, 85, 247, 0.5)' }}>
-              our platform
-            </span> and easy to<br />
-            use.
+              Zero Data Corruptions
+            </span>
           </h2>
 
           <p style={{
             fontSize: '1.05rem',
             color: '#94a3b8',
-            lineHeight: 1.6,
-            marginBottom: '2.5rem',
-            maxWidth: '480px'
+            lineHeight: 1.65,
+            marginBottom: '2rem',
+            maxWidth: '500px'
           }}>
-            Stay up-to-date with the latest news and trends in the crypto space. Follow our market insights to make informed decisions.
+            Operra enforces strict business rules at the database transaction boundary. Prevents negative inventory, duplicate transfer receipts, and unauthorized role operations.
           </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <CheckCircle2 size={20} color="#34d399" />
+              <span style={{ fontSize: '0.95rem', color: '#e2e8f0' }}>Atomic Stock Dispatches & Destination Locking</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <CheckCircle2 size={20} color="#34d399" />
+              <span style={{ fontSize: '0.95rem', color: '#e2e8f0' }}>Backend Role-Based Access Control (Admin, Operations, Sales)</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <CheckCircle2 size={20} color="#34d399" />
+              <span style={{ fontSize: '0.95rem', color: '#e2e8f0' }}>Automated Shortage & Stock Availability Math</span>
+            </div>
+          </div>
 
           <button
             onClick={onGoToLogin}
             style={{
-              padding: '0.8rem 2rem',
-              borderRadius: '0.5rem',
-              background: 'rgba(124, 58, 237, 0.08)',
+              padding: '0.85rem 2rem',
+              borderRadius: '0.6rem',
+              background: 'linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%)',
               color: '#ffffff',
-              border: '1px solid rgba(168, 85, 247, 0.4)',
-              fontWeight: 600,
+              border: 'none',
+              fontWeight: 700,
               fontSize: '0.95rem',
               cursor: 'pointer',
-              transition: 'all 0.25s ease'
+              boxShadow: '0 4px 20px rgba(124, 58, 237, 0.4)'
             }}
           >
-            Explore Now
+            Launch Live Platform
           </button>
         </div>
 
-        {/* Right Column: 3D Isometric Data Center / Building Vector Graphic */}
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <svg width="460" height="420" viewBox="0 0 460 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="cyanBuild" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#06b6d4" />
-                <stop offset="100%" stopColor="#3b82f6" />
-              </linearGradient>
-              <linearGradient id="purpleBuild" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#a855f7" />
-                <stop offset="100%" stopColor="#6d28d9" />
-              </linearGradient>
-            </defs>
-
-            {/* Glowing Ground Grid */}
-            <path d="M50 320 L230 400 L410 320 L230 240 Z" fill="#130a2a" stroke="#7c3aed" strokeWidth="2" opacity="0.8" />
-            <path d="M90 320 L230 380 L370 320" stroke="#06b6d4" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.6" />
-
-            {/* Isometric Tower Structure */}
-            {/* Main Tower Left Face */}
-            <path d="M230 140 L150 180 L150 330 L230 290 Z" fill="url(#cyanBuild)" opacity="0.85" stroke="#38bdf8" strokeWidth="2" />
-            {/* Main Tower Right Face */}
-            <path d="M230 140 L310 180 L310 330 L230 290 Z" fill="url(#purpleBuild)" opacity="0.9" stroke="#a855f7" strokeWidth="2" />
-            {/* Tower Top Roof */}
-            <path d="M230 140 L150 180 L230 220 L310 180 Z" fill="#c084fc" opacity="0.95" />
-
-            {/* Windows / Server Grid Lines */}
-            <line x1="170" y1="210" x2="230" y2="180" stroke="#ffffff" strokeWidth="2" opacity="0.6" />
-            <line x1="170" y1="240" x2="230" y2="210" stroke="#ffffff" strokeWidth="2" opacity="0.6" />
-            <line x1="170" y1="270" x2="230" y2="240" stroke="#ffffff" strokeWidth="2" opacity="0.6" />
-
-            <line x1="230" y1="180" x2="290" y2="210" stroke="#ffffff" strokeWidth="2" opacity="0.6" />
-            <line x1="230" y1="210" x2="290" y2="240" stroke="#ffffff" strokeWidth="2" opacity="0.6" />
-            <line x1="230" y1="240" x2="290" y2="270" stroke="#ffffff" strokeWidth="2" opacity="0.6" />
-
-            {/* Bitcoin Floating Disk on Roof */}
-            <g transform="translate(230, 95)">
-              <ellipse cx="0" cy="0" rx="30" ry="15" fill="#f59e0b" stroke="#ffffff" strokeWidth="2" />
-              <text x="0" y="5" fill="#ffffff" fontSize="16" fontWeight="900" textAnchor="middle">₿</text>
-            </g>
-
-            {/* Smaller Surrounding Isometric Blocks */}
-            <path d="M100 270 L60 290 L60 340 L100 320 Z" fill="#1e1b4b" stroke="#06b6d4" strokeWidth="1.5" />
-            <path d="M100 270 L140 290 L140 340 L100 320 Z" fill="#2e1065" stroke="#a855f7" strokeWidth="1.5" />
-
-            <path d="M360 270 L320 290 L320 340 L360 320 Z" fill="#1e1b4b" stroke="#06b6d4" strokeWidth="1.5" />
-            <path d="M360 270 L400 290 L400 340 L360 320 Z" fill="#2e1065" stroke="#a855f7" strokeWidth="1.5" />
-          </svg>
-        </div>
-      </section>
-
-      {/* Section 4: "24/7 access to customer support" */}
-      <section style={{
-        maxWidth: '1350px',
-        margin: '0 auto 5rem',
-        padding: '0 4rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        position: 'relative',
-        zIndex: 5
-      }}>
-        {/* Floating Bitcoin Badge Bottom Left */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+        {/* Right Column: Database Architectural Spec Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
           <div style={{
-            width: '80px',
-            height: '80px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #f59e0b, #d97706)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '2.5rem',
-            color: '#ffffff',
-            fontWeight: 900,
-            boxShadow: '0 0 30px rgba(245, 158, 11, 0.5)',
-            transform: 'rotate(-15deg)'
+            background: 'rgba(23, 14, 45, 0.75)',
+            border: '1px solid rgba(139, 92, 246, 0.25)',
+            borderRadius: '1rem',
+            padding: '1.5rem'
           }}>
-            ₿
+            <Database size={28} color="#38bdf8" style={{ marginBottom: '0.75rem' }} />
+            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.5rem' }}>Prisma & PostgreSQL</h4>
+            <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5 }}>
+              Strict relational schema with transactional consistency.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'rgba(23, 14, 45, 0.75)',
+            border: '1px solid rgba(139, 92, 246, 0.25)',
+            borderRadius: '1rem',
+            padding: '1.5rem'
+          }}>
+            <Lock size={28} color="#c084fc" style={{ marginBottom: '0.75rem' }} />
+            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.5rem' }}>JWT Auth & Roles</h4>
+            <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5 }}>
+              Secure backend route guards for Admin, Operations, and Sales.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'rgba(23, 14, 45, 0.75)',
+            border: '1px solid rgba(139, 92, 246, 0.25)',
+            borderRadius: '1rem',
+            padding: '1.5rem'
+          }}>
+            <BarChart3 size={28} color="#fbbf24" style={{ marginBottom: '0.75rem' }} />
+            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.5rem' }}>Material Analytics</h4>
+            <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5 }}>
+              Instant visibility into material shortages across orders.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'rgba(23, 14, 45, 0.75)',
+            border: '1px solid rgba(139, 92, 246, 0.25)',
+            borderRadius: '1rem',
+            padding: '1.5rem'
+          }}>
+            <ShieldCheck size={28} color="#34d399" style={{ marginBottom: '0.75rem' }} />
+            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.5rem' }}>Automated Tests</h4>
+            <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5 }}>
+              Comprehensive test suite covering transactions & edge cases.
+            </p>
           </div>
         </div>
-
-        {/* Text Right */}
-        <div style={{ textAlign: 'right' }}>
-          <h3 style={{
-            fontSize: '2.25rem',
-            fontWeight: 800,
-            color: '#ffffff',
-            lineHeight: 1.2
-          }}>
-            <span style={{ color: '#a855f7' }}>24/7</span> access to customer<br />support
-          </h3>
-        </div>
       </section>
 
-      {/* Quick Access Footer */}
+      {/* Footer Banner */}
       <footer style={{
-        borderTop: '1px solid rgba(139, 92, 246, 0.15)',
+        borderTop: '1px solid rgba(139, 92, 246, 0.2)',
         padding: '2.5rem 4rem',
         textAlign: 'center',
         color: '#64748b',
@@ -620,11 +622,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
         position: 'relative',
         zIndex: 5
       }}>
-        <p>Operra Operations ERP © 2026. Designed with Precision, Built with React, Express, Prisma & PostgreSQL.</p>
+        <p>Operra Mini Operations ERP © 2026. Built with React, Express, Prisma & PostgreSQL.</p>
       </footer>
     </div>
   );
 };
 
 export default LandingPage;
-
