@@ -160,13 +160,13 @@ export const Inventory: React.FC = () => {
           <table style={{ width: '100%', tableLayout: 'fixed' }}>
             <thead>
               <tr>
-                <th style={{ width: '22%' }}>Location</th>
-                <th style={{ width: '28%' }}>Item & Category</th>
-                <th style={{ width: '16%' }}>SKU</th>
-                <th style={{ width: '16%' }}>Batch Number</th>
-                <th style={{ textAlign: 'center', width: '6%' }}>Physical</th>
-                <th style={{ textAlign: 'center', width: '6%' }}>Reserved</th>
-                <th style={{ textAlign: 'center', width: '6%' }}>Available</th>
+                <th style={{ width: '20%' }}>Location</th>
+                <th style={{ width: '23%' }}>Item & Category</th>
+                <th style={{ width: '14%' }}>SKU</th>
+                <th style={{ width: '15%' }}>Batch Number</th>
+                <th style={{ textAlign: 'center', width: '9%' }}>Physical</th>
+                <th style={{ textAlign: 'center', width: '9%' }}>Reserved</th>
+                <th style={{ textAlign: 'center', width: '10%' }}>Available</th>
               </tr>
             </thead>
             <tbody>

@@ -94,7 +94,7 @@ async function main() {
   const itemSteel = await prisma.item.create({
     data: {
       sku: 'SKU-STL-002',
-      name: 'Industrial Steel Rod 10mm',
+      name: 'High-Grade Industrial Steel',
       categoryId: catHardware.id,
     },
   });

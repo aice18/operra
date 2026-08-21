@@ -71,6 +71,14 @@ export const App: React.FC = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-theme-active');
+    } else {
+      document.body.classList.remove('dark-theme-active');
+    }
+  }, [darkMode]);
+
   if (authLoading) {
     return (
       <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ddd6fe', color: '#64748b', fontWeight: 600 }}>
@@ -99,14 +107,6 @@ export const App: React.FC = () => {
       : user.role === 'OPERATIONS'
       ? 'badge-ops'
       : 'badge-sales';
-
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark-theme-active');
-    } else {
-      document.body.classList.remove('dark-theme-active');
-    }
-  }, [darkMode]);
 
   return (
     <div className={`app-container ${darkMode ? 'dark-theme' : ''}`}>
@@ -247,7 +247,7 @@ export const App: React.FC = () => {
       </aside>
 
       {/* Main Container - Persistent Header across ALL tabs */}
-      <main className="main-content">
+      <main className={`main-content ${activeTab === 'overview' ? 'hide-scrollbar' : ''}`}>
         {/* Top Navbar Header - Always visible across every page */}
         <header style={{
           display: 'flex',

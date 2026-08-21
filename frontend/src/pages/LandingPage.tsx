@@ -22,7 +22,7 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
   return (
-    <div style={{
+    <div className="hide-scrollbar" style={{
       position: 'fixed',
       inset: 0,
       width: '100vw',
@@ -32,7 +32,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
       fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
       overflowY: 'auto',
       overflowX: 'hidden',
-      zIndex: 9999
+      zIndex: 9999,
+      scrollbarWidth: 'none',
+      msOverflowStyle: 'none'
     }}>
       {/* Dynamic Background Ambient Glows */}
       <div style={{
