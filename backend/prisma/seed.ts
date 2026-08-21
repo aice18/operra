@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Seeding initial data...');
+  console.log('Seeding comprehensive historical ERP data...');
 
   // Clean existing tables
   await prisma.orderItem.deleteMany();
@@ -121,15 +121,14 @@ async function main() {
     },
   });
 
-  // Create Initial Inventories
-  // Location MAIN
+  // Create Inventories
   await prisma.inventory.create({
     data: {
       locationId: locMain.id,
       itemId: itemCpu.id,
       batchNumber: 'BATCH-2026-A1',
-      physicalQuantity: 120,
-      reservedQuantity: 30, // Available = 90
+      physicalQuantity: 150,
+      reservedQuantity: 30, // Available = 120
     },
   });
 
@@ -153,7 +152,6 @@ async function main() {
     },
   });
 
-  // Location NORTH
   await prisma.inventory.create({
     data: {
       locationId: locNorth.id,
@@ -184,7 +182,6 @@ async function main() {
     },
   });
 
-  // Location SOUTH
   await prisma.inventory.create({
     data: {
       locationId: locSouth.id,
@@ -205,12 +202,12 @@ async function main() {
     },
   });
 
-  // Create Work Orders
+  // Create Work Orders (Historical + Active)
   await prisma.workOrder.create({
     data: {
       locationId: locMain.id,
       itemId: itemCpu.id,
-      requiredQuantity: 150, // Stock at MAIN is 90 available -> Shortage 60
+      requiredQuantity: 180,
       assignedUserId: opsUser.id,
       status: 'IN_PROGRESS',
     },
@@ -220,7 +217,7 @@ async function main() {
     data: {
       locationId: locNorth.id,
       itemId: itemSensor.id,
-      requiredQuantity: 50, // Available at NORTH is 75 -> Shortage 0
+      requiredQuantity: 50,
       assignedUserId: opsUser.id,
       status: 'ASSIGNED',
     },
@@ -230,14 +227,24 @@ async function main() {
     data: {
       locationId: locSouth.id,
       itemId: itemCasing.id,
-      requiredQuantity: 100, // Available at SOUTH is 75 -> Shortage 25
+      requiredQuantity: 100,
       assignedUserId: admin.id,
       status: 'ASSIGNED',
     },
   });
 
-  // Create Sample Internal Transfers
-  const transfer1 = await prisma.internalTransfer.create({
+  await prisma.workOrder.create({
+    data: {
+      locationId: locMain.id,
+      itemId: itemSteel.id,
+      requiredQuantity: 250,
+      assignedUserId: admin.id,
+      status: 'COMPLETED',
+    },
+  });
+
+  // Create Internal Transfers (Historical + Active)
+  await prisma.internalTransfer.create({
     data: {
       sourceLocationId: locNorth.id,
       destinationLocationId: locMain.id,
@@ -247,7 +254,7 @@ async function main() {
     },
   });
 
-  const transfer2 = await prisma.internalTransfer.create({
+  await prisma.internalTransfer.create({
     data: {
       sourceLocationId: locMain.id,
       destinationLocationId: locSouth.id,
@@ -257,7 +264,17 @@ async function main() {
     },
   });
 
-  // Create Sample Customer Orders
+  await prisma.internalTransfer.create({
+    data: {
+      sourceLocationId: locSouth.id,
+      destinationLocationId: locNorth.id,
+      itemId: itemSensor.id,
+      quantity: 15,
+      status: 'RECEIVED',
+    },
+  });
+
+  // Create Customer Orders (Historical + Active)
   const order1 = await prisma.customerOrder.create({
     data: {
       orderNumber: 'ORD-2026-1001',
@@ -289,6 +306,23 @@ async function main() {
       itemId: itemDisplay.id,
       locationId: locNorth.id,
       quantity: 20,
+    },
+  });
+
+  const order3 = await prisma.customerOrder.create({
+    data: {
+      orderNumber: 'ORD-2026-1003',
+      createdById: admin.id,
+      status: 'RESERVED',
+    },
+  });
+
+  await prisma.orderItem.create({
+    data: {
+      customerOrderId: order3.id,
+      itemId: itemSteel.id,
+      locationId: locMain.id,
+      quantity: 50,
     },
   });
 

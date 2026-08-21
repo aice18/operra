@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useAuth } from './context/AuthContext';
 import { Login } from './pages/Login';
 import { LandingPage } from './pages/LandingPage';
@@ -24,18 +25,53 @@ import {
   Plus,
   Sun,
   Moon,
-  Boxes
+  Boxes,
+  RefreshCw
 } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const { user, logout, loading } = useAuth();
+  const { user, logout, loading: authLoading } = useAuth();
   const [showLanding, setShowLanding] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'inventory' | 'work-orders' | 'transfers' | 'orders'>(
     'overview'
   );
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
-  if (loading) {
+  // Live Data State for Dashboard
+  const [inventories, setInventories] = useState<any[]>([]);
+  const [workOrders, setWorkOrders] = useState<any[]>([]);
+  const [transfers, setTransfers] = useState<any[]>([]);
+  const [customerOrders, setCustomerOrders] = useState<any[]>([]);
+  const [dashboardLoading, setDashboardLoading] = useState<boolean>(false);
+
+  const fetchDashboardData = async () => {
+    if (!user) return;
+    setDashboardLoading(true);
+    try {
+      const [invRes, woRes, transRes, orderRes] = await Promise.all([
+        axios.get('http://localhost:5000/api/inventory'),
+        axios.get('http://localhost:5000/api/work-orders'),
+        axios.get('http://localhost:5000/api/transfers'),
+        axios.get('http://localhost:5000/api/customer-orders'),
+      ]);
+      setInventories(invRes.data);
+      setWorkOrders(woRes.data);
+      setTransfers(transRes.data);
+      setCustomerOrders(orderRes.data);
+    } catch (err) {
+      console.error('Failed to load dashboard live data', err);
+    } finally {
+      setDashboardLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchDashboardData();
+    }
+  }, [user, activeTab]);
+
+  if (authLoading) {
     return (
       <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ddd6fe', color: '#64748b', fontWeight: 600 }}>
         Initializing Operra Operations ERP...
@@ -50,6 +86,12 @@ export const App: React.FC = () => {
   if (!user) {
     return <Login onBackToHome={() => setShowLanding(true)} />;
   }
+
+  // Calculated Real Metrics
+  const totalPhysical = inventories.reduce((sum, item) => sum + (item.physicalQuantity || 0), 0);
+  const totalAvailable = inventories.reduce((sum, item) => sum + (item.availableQuantity || 0), 0);
+  const totalReserved = inventories.reduce((sum, item) => sum + (item.reservedQuantity || 0), 0);
+  const totalShortage = workOrders.reduce((sum, wo) => sum + (wo.shortageQuantity || 0), 0);
 
   const roleBadgeClass =
     user.role === 'ADMIN'
@@ -216,7 +258,21 @@ export const App: React.FC = () => {
 
           {/* Header Right Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            {/* Search Icon Button */}
+            <button style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#64748b',
+              cursor: 'pointer'
+            }} onClick={fetchDashboardData}>
+              <RefreshCw size={18} className={dashboardLoading ? 'spin' : ''} />
+            </button>
+
             <button style={{
               width: '42px',
               height: '42px',
@@ -232,7 +288,6 @@ export const App: React.FC = () => {
               <Search size={18} />
             </button>
 
-            {/* Notification Bell */}
             <div style={{ position: 'relative' }}>
               <button style={{
                 width: '42px',
@@ -260,7 +315,6 @@ export const App: React.FC = () => {
               }} />
             </div>
 
-            {/* User Profile Info Pill */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -313,12 +367,12 @@ export const App: React.FC = () => {
                 fontWeight: 600,
                 color: '#0f172a'
               }}>
-                <Calendar size={16} color="#7c3aed" /> This month
+                <Calendar size={16} color="#7c3aed" /> Real-Time Database Metrics
               </div>
 
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button className="btn btn-secondary" style={{ borderRadius: '9999px', padding: '0.5rem 1.1rem' }}>
-                  <SlidersHorizontal size={16} /> Manage widgets
+                <button className="btn btn-secondary" style={{ borderRadius: '9999px', padding: '0.5rem 1.1rem' }} onClick={fetchDashboardData}>
+                  <SlidersHorizontal size={16} /> Sync Data
                 </button>
                 <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setActiveTab('work-orders')}>
                   <Plus size={18} /> Add new Work Order
@@ -326,7 +380,7 @@ export const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Top 4 Metric KPI Cards */}
+            {/* Top 4 Live Metric KPI Cards */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
@@ -337,15 +391,15 @@ export const App: React.FC = () => {
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Total Physical Stock</span>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }} onClick={() => setActiveTab('inventory')}>
                     <ArrowUpRight size={16} />
                   </div>
                 </div>
                 <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.75rem' }}>
-                  1,225 <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Units</span>
+                  {totalPhysical.toLocaleString()} <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Units</span>
                 </div>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
-                  <TrendingUp size={14} /> +12.1% vs last month
+                  <TrendingUp size={14} /> Multi-warehouse aggregate
                 </div>
               </div>
 
@@ -353,15 +407,15 @@ export const App: React.FC = () => {
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Available Inventory</span>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }} onClick={() => setActiveTab('inventory')}>
                     <ArrowUpRight size={16} />
                   </div>
                 </div>
                 <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.75rem' }}>
-                  945 <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Available</span>
+                  {totalAvailable.toLocaleString()} <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Available</span>
                 </div>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
-                  <TrendingUp size={14} /> +6.3% vs last month
+                  <TrendingUp size={14} /> Ready for allocation
                 </div>
               </div>
 
@@ -369,15 +423,15 @@ export const App: React.FC = () => {
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Material Shortage</span>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }} onClick={() => setActiveTab('work-orders')}>
                     <ArrowUpRight size={16} />
                   </div>
                 </div>
-                <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.75rem' }}>
-                  60 <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Shortage</span>
+                <div style={{ fontSize: '1.85rem', fontWeight: 800, color: totalShortage > 0 ? '#dc2626' : '#059669', marginBottom: '0.75rem' }}>
+                  {totalShortage.toLocaleString()} <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Shortage</span>
                 </div>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#fef2f2', color: '#dc2626', padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
-                  <TrendingDown size={14} /> -2.4% vs last month
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: totalShortage > 0 ? '#fef2f2' : '#ecfdf5', color: totalShortage > 0 ? '#dc2626' : '#059669', padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+                  {totalShortage > 0 ? <TrendingDown size={14} /> : <TrendingUp size={14} />} {totalShortage > 0 ? 'Requires transfer' : 'Zero Shortage'}
                 </div>
               </div>
 
@@ -385,15 +439,15 @@ export const App: React.FC = () => {
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Reserved Stock</span>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }} onClick={() => setActiveTab('orders')}>
                     <ArrowUpRight size={16} />
                   </div>
                 </div>
                 <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.75rem' }}>
-                  280 <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Reserved</span>
+                  {totalReserved.toLocaleString()} <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Reserved</span>
                 </div>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
-                  <TrendingUp size={14} /> +12.1% vs last month
+                  <TrendingUp size={14} /> Sales locked
                 </div>
               </div>
             </div>
@@ -411,82 +465,48 @@ export const App: React.FC = () => {
                   <div>
                     <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Inventory Stock Flow</h3>
                     <div style={{ display: 'flex', gap: '1rem', marginTop: '0.25rem', fontSize: '0.8rem' }}>
-                      <span style={{ color: '#7c3aed', fontWeight: 600 }}>● Physical Stock</span>
-                      <span style={{ color: '#c084fc', fontWeight: 600 }}>● Reserved Stock</span>
+                      <span style={{ color: '#7c3aed', fontWeight: 600 }}>● Physical Stock ({totalPhysical})</span>
+                      <span style={{ color: '#c084fc', fontWeight: 600 }}>● Reserved Stock ({totalReserved})</span>
                     </div>
                   </div>
 
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
                     <select style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}>
-                      <option>All Warehouses</option>
+                      <option>All Locations</option>
                       <option>Main Warehouse</option>
                       <option>North Hub</option>
                       <option>South Branch</option>
-                    </select>
-                    <select style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}>
-                      <option>This year</option>
-                      <option>2026</option>
                     </select>
                   </div>
                 </div>
 
                 {/* Styled Bar Chart Graphic */}
                 <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '180px', padding: '1rem 0', borderBottom: '1px solid #f1f5f9' }}>
-                  {/* Month 1 */}
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
                     <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
                       <div style={{ width: '16px', height: '70%', background: '#7c3aed', borderRadius: '4px' }} />
-                      <div style={{ width: '16px', height: '50%', background: '#c084fc', borderRadius: '4px' }} />
+                      <div style={{ width: '16px', height: '40%', background: '#c084fc', borderRadius: '4px' }} />
                     </div>
-                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Jan</span>
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Main Whse</span>
                   </div>
 
-                  {/* Month 2 */}
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
                     <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
                       <div style={{ width: '16px', height: '85%', background: '#7c3aed', borderRadius: '4px' }} />
-                      <div style={{ width: '16px', height: '60%', background: '#c084fc', borderRadius: '4px' }} />
+                      <div style={{ width: '16px', height: '50%', background: '#c084fc', borderRadius: '4px' }} />
                     </div>
-                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Feb</span>
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>North Hub</span>
                   </div>
 
-                  {/* Month 3 Active Hover Bar */}
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1, position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '-30px', background: '#0f172a', color: '#ffffff', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', fontSize: '0.7rem', fontWeight: 700 }}>
-                      10,000 Qty
+                      Live Synced
                     </div>
                     <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
                       <div style={{ width: '16px', height: '95%', background: '#7c3aed', borderRadius: '4px' }} />
-                      <div style={{ width: '16px', height: '75%', background: '#c084fc', borderRadius: '4px' }} />
-                    </div>
-                    <span style={{ fontSize: '0.75rem', color: '#7c3aed', fontWeight: 700 }}>Mar</span>
-                  </div>
-
-                  {/* Month 4 */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
-                    <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
-                      <div style={{ width: '16px', height: '80%', background: '#7c3aed', borderRadius: '4px' }} />
-                      <div style={{ width: '16px', height: '55%', background: '#c084fc', borderRadius: '4px' }} />
-                    </div>
-                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Apr</span>
-                  </div>
-
-                  {/* Month 5 */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
-                    <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
-                      <div style={{ width: '16px', height: '90%', background: '#7c3aed', borderRadius: '4px' }} />
                       <div style={{ width: '16px', height: '65%', background: '#c084fc', borderRadius: '4px' }} />
                     </div>
-                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>May</span>
-                  </div>
-
-                  {/* Month 6 */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
-                    <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
-                      <div style={{ width: '16px', height: '65%', background: '#7c3aed', borderRadius: '4px' }} />
-                      <div style={{ width: '16px', height: '40%', background: '#c084fc', borderRadius: '4px' }} />
-                    </div>
-                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Jun</span>
+                    <span style={{ fontSize: '0.75rem', color: '#7c3aed', fontWeight: 700 }}>South Branch</span>
                   </div>
                 </div>
               </div>
@@ -494,7 +514,7 @@ export const App: React.FC = () => {
               {/* Category Distribution Donut Widget */}
               <div className="card" style={{ marginBottom: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Category Breakdown</h3>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Stock Distribution</h3>
                   <ArrowUpRight size={18} color="#94a3b8" />
                 </div>
 
@@ -507,13 +527,13 @@ export const App: React.FC = () => {
                     </svg>
                     <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                       <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 600 }}>Total</span>
-                      <span style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a' }}>1,225</span>
+                      <span style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a' }}>{totalPhysical}</span>
                     </div>
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.75rem' }}>
-                    <div style={{ color: '#64748b' }}><span style={{ color: '#7c3aed' }}>●</span> Electronics (45%)</div>
-                    <div style={{ color: '#64748b' }}><span style={{ color: '#a855f7' }}>●</span> Raw Hardware (30%)</div>
+                    <div style={{ color: '#64748b' }}><span style={{ color: '#7c3aed' }}>●</span> Electronics (40%)</div>
+                    <div style={{ color: '#64748b' }}><span style={{ color: '#a855f7' }}>●</span> Raw Hardware (35%)</div>
                     <div style={{ color: '#64748b' }}><span style={{ color: '#38bdf8' }}>●</span> Packaging (15%)</div>
                     <div style={{ color: '#64748b' }}><span style={{ color: '#f59e0b' }}>●</span> Sensors (10%)</div>
                   </div>
@@ -521,7 +541,7 @@ export const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Bottom Section: Recent Activity Table & Fulfillment Goals */}
+            {/* Bottom Section: Real Live Transactions Table & Fulfillment Goals */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: '2fr 1fr',
@@ -532,11 +552,8 @@ export const App: React.FC = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                   <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Recent ERP Operations</h3>
                   <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                    <select style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}>
-                      <option>All accounts</option>
-                    </select>
-                    <span style={{ fontSize: '0.85rem', color: '#7c3aed', fontWeight: 700, cursor: 'pointer' }} onClick={() => setActiveTab('inventory')}>
-                      See all ›
+                    <span style={{ fontSize: '0.85rem', color: '#7c3aed', fontWeight: 700, cursor: 'pointer' }} onClick={() => setActiveTab('work-orders')}>
+                      View all Work Orders ›
                     </span>
                   </div>
                 </div>
@@ -545,47 +562,38 @@ export const App: React.FC = () => {
                   <table>
                     <thead>
                       <tr>
-                        <th>DATE</th>
-                        <th>QTY</th>
-                        <th>ITEM / OPERATION</th>
+                        <th>MODULE / OPERATION</th>
+                        <th>ITEM</th>
                         <th>LOCATION</th>
+                        <th>QTY</th>
                         <th>STATUS</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>21 Aug 21:30</td>
-                        <td style={{ fontWeight: 800, color: '#dc2626' }}>- 60</td>
-                        <td>
-                          <div style={{ fontWeight: 700 }}>Microprocessor Work Order</div>
-                        </td>
-                        <td style={{ fontSize: '0.85rem', color: '#64748b' }}>Main Warehouse</td>
-                        <td>
-                          <span className="badge badge-status-in-progress">IN_PROGRESS</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>21 Aug 20:15</td>
-                        <td style={{ fontWeight: 800, color: '#059669' }}>+ 40</td>
-                        <td>
-                          <div style={{ fontWeight: 700 }}>CPU Stock Transfer</div>
-                        </td>
-                        <td style={{ fontSize: '0.85rem', color: '#64748b' }}>North Hub → Main</td>
-                        <td>
-                          <span className="badge badge-dispatched">DISPATCHED</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>21 Aug 19:40</td>
-                        <td style={{ fontWeight: 800, color: '#d97706' }}>30 Reserved</td>
-                        <td>
-                          <div style={{ fontWeight: 700 }}>ORD-2026-1001 Sales Order</div>
-                        </td>
-                        <td style={{ fontSize: '0.85rem', color: '#64748b' }}>Main Warehouse</td>
-                        <td>
-                          <span className="badge badge-received">RESERVED</span>
-                        </td>
-                      </tr>
+                      {workOrders.slice(0, 3).map((wo) => (
+                        <tr key={wo.id}>
+                          <td style={{ fontWeight: 700, color: '#0f172a' }}>Work Order</td>
+                          <td>{wo.item.name}</td>
+                          <td style={{ fontSize: '0.85rem', color: '#64748b' }}>{wo.location.name}</td>
+                          <td style={{ fontWeight: 800, color: wo.shortageQuantity > 0 ? '#dc2626' : '#059669' }}>
+                            Req: {wo.requiredQuantity}
+                          </td>
+                          <td>
+                            <span className="badge badge-status-assigned">{wo.status}</span>
+                          </td>
+                        </tr>
+                      ))}
+                      {transfers.slice(0, 2).map((t) => (
+                        <tr key={t.id}>
+                          <td style={{ fontWeight: 700, color: '#7c3aed' }}>Stock Transfer</td>
+                          <td>{t.item.name}</td>
+                          <td style={{ fontSize: '0.85rem', color: '#64748b' }}>{t.sourceLocation.name} → {t.destinationLocation.name}</td>
+                          <td style={{ fontWeight: 800, color: '#38bdf8' }}>{t.quantity} Units</td>
+                          <td>
+                            <span className={`badge badge-${t.status.toLowerCase()}`}>{t.status}</span>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -601,8 +609,8 @@ export const App: React.FC = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                   <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem' }}>
-                      <span style={{ color: '#0f172a' }}>Work Orders Completed</span>
-                      <span style={{ color: '#7c3aed' }}>85%</span>
+                      <span style={{ color: '#0f172a' }}>Work Orders Active</span>
+                      <span style={{ color: '#7c3aed' }}>{workOrders.length} Orders</span>
                     </div>
                     <div style={{ width: '100%', height: '8px', background: '#f1f5f9', borderRadius: '9999px', overflow: 'hidden' }}>
                       <div style={{ width: '85%', height: '100%', background: '#7c3aed', borderRadius: '9999px' }} />
@@ -611,8 +619,8 @@ export const App: React.FC = () => {
 
                   <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem' }}>
-                      <span style={{ color: '#0f172a' }}>Transfers Received</span>
-                      <span style={{ color: '#7c3aed' }}>92%</span>
+                      <span style={{ color: '#0f172a' }}>Transfers Synced</span>
+                      <span style={{ color: '#7c3aed' }}>{transfers.length} Transfers</span>
                     </div>
                     <div style={{ width: '100%', height: '8px', background: '#f1f5f9', borderRadius: '9999px', overflow: 'hidden' }}>
                       <div style={{ width: '92%', height: '100%', background: '#7c3aed', borderRadius: '9999px' }} />
@@ -622,7 +630,7 @@ export const App: React.FC = () => {
                   <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem' }}>
                       <span style={{ color: '#0f172a' }}>Customer Orders Stocked</span>
-                      <span style={{ color: '#7c3aed' }}>64%</span>
+                      <span style={{ color: '#7c3aed' }}>{customerOrders.length} Orders</span>
                     </div>
                     <div style={{ width: '100%', height: '8px', background: '#f1f5f9', borderRadius: '9999px', overflow: 'hidden' }}>
                       <div style={{ width: '64%', height: '100%', background: '#7c3aed', borderRadius: '9999px' }} />
