@@ -24,7 +24,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <img src={logoImg} alt="Operra Logo" style={{ width: '40px', height: '40px', borderRadius: '0.5rem', objectFit: 'cover' }} />
           <div>
-            <div style={{ fontWeight: 800, fontSize: '1.4rem', color: '#ffffff', leadingHeight: '1' }}>Operra</div>
+            <div style={{ fontWeight: 800, fontSize: '1.4rem', color: '#ffffff', lineHeight: '1' }}>Operra</div>
             <div style={{ fontSize: '0.7rem', color: 'var(--accent-primary)', fontWeight: 700, letterSpacing: '0.8px' }}>MODERN OPERATIONS ERP</div>
           </div>
         </div>
