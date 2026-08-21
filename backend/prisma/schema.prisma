@@ -1,0 +1,142 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String      @id @default(uuid())
+  email        String      @unique
+  passwordHash String
+  name         String
+  role         String      @default("OPERATIONS") // ADMIN | OPERATIONS | SALES
+  locationId   String?
+  location     Location?   @relation(fields: [locationId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  workOrders   WorkOrder[]
+  customerOrders CustomerOrder[]
+
+  @@map("users")
+}
+
+model Location {
+  id                   String             @id @default(uuid())
+  name                 String
+  code                 String             @unique
+  inventories          Inventory[]
+  workOrders           WorkOrder[]
+  transfersFrom        InternalTransfer[] @relation("SourceLocation")
+  transfersTo          InternalTransfer[] @relation("DestinationLocation")
+  users                User[]
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  @@map("locations")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  items     Item[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("categories")
+}
+
+model Item {
+  id                String             @id @default(uuid())
+  sku               String             @unique
+  name              String
+  categoryId        String
+  category          Category           @relation(fields: [categoryId], references: [id])
+  inventories       Inventory[]
+  workOrders        WorkOrder[]
+  internalTransfers InternalTransfer[]
+  orderItems        OrderItem[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  @@map("items")
+}
+
+model Inventory {
+  id               String   @id @default(uuid())
+  locationId       String
+  location         Location @relation(fields: [locationId], references: [id])
+  itemId           String
+  item             Item     @relation(fields: [itemId], references: [id])
+  batchNumber      String
+  physicalQuantity Int      @default(0)
+  reservedQuantity Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([locationId, itemId, batchNumber])
+  @@map("inventories")
+}
+
+model WorkOrder {
+  id               String   @id @default(uuid())
+  locationId       String
+  location         Location @relation(fields: [locationId], references: [id])
+  itemId           String
+  item             Item     @relation(fields: [itemId], references: [id])
+  requiredQuantity Int
+  assignedUserId   String?
+  assignedUser     User?    @relation(fields: [assignedUserId], references: [id])
+  status           String   @default("ASSIGNED") // ASSIGNED | IN_PROGRESS | COMPLETED
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("work_orders")
+}
+
+model InternalTransfer {
+  id                    String   @id @default(uuid())
+  sourceLocationId      String
+  sourceLocation        Location @relation("SourceLocation", fields: [sourceLocationId], references: [id])
+  destinationLocationId String
+  destinationLocation   Location @relation("DestinationLocation", fields: [destinationLocationId], references: [id])
+  itemId                String
+  item                  Item     @relation(fields: [itemId], references: [id])
+  quantity              Int
+  status                String   @default("REQUESTED") // REQUESTED | DISPATCHED | RECEIVED
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("internal_transfers")
+}
+
+model CustomerOrder {
+  id          String      @id @default(uuid())
+  orderNumber String      @unique
+  createdById String
+  createdBy   User        @relation(fields: [createdById], references: [id])
+  status      String      @default("PENDING") // PENDING | RESERVED | FULFILLED | CANCELLED
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("customer_orders")
+}
+
+model OrderItem {
+  id              String        @id @default(uuid())
+  customerOrderId String
+  customerOrder   CustomerOrder @relation(fields: [customerOrderId], references: [id], onDelete: Cascade)
+  itemId          String
+  item            Item          @relation(fields: [itemId], references: [id])
+  locationId      String
+  quantity        Int
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("order_items")
+}
