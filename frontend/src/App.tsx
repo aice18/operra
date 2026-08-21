@@ -12,13 +12,20 @@ import {
   ArrowLeftRight,
   ShoppingBag,
   LogOut,
-  UserCheck,
   Globe,
   LayoutDashboard,
-  Zap,
+  Search,
+  Bell,
+  ArrowUpRight,
+  TrendingUp,
+  TrendingDown,
+  Calendar,
+  SlidersHorizontal,
+  Plus,
+  Sun,
+  Moon,
+  Boxes
 } from 'lucide-react';
-
-import logoImg from './assets/logo.png';
 
 export const App: React.FC = () => {
   const { user, logout, loading } = useAuth();
@@ -26,11 +33,12 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'inventory' | 'work-orders' | 'transfers' | 'orders'>(
     'overview'
   );
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0f172a', color: '#94a3b8' }}>
-        Loading ERP System...
+      <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ddd6fe', color: '#64748b', fontWeight: 600 }}>
+        Initializing Operra Operations ERP...
       </div>
     );
   }
@@ -52,142 +60,580 @@ export const App: React.FC = () => {
 
   return (
     <div className="app-container">
-      {/* Sidebar Navigation */}
+      {/* Left Sidebar Navigation */}
       <aside className="sidebar">
+        {/* Brand Logo */}
         <div className="sidebar-brand">
-          <img src={logoImg} alt="Operra Logo" style={{ width: '36px', height: '36px', borderRadius: '0.4rem', objectFit: 'cover' }} />
+          <div style={{
+            width: '38px',
+            height: '38px',
+            borderRadius: '0.75rem',
+            background: '#0f172a',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#ffffff',
+            boxShadow: '0 4px 12px rgba(15, 23, 42, 0.2)'
+          }}>
+            <Boxes size={22} />
+          </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontWeight: 800, fontSize: '1.2rem', color: '#ffffff' }}>Operra</span>
-            <span style={{ fontSize: '0.65rem', color: 'var(--accent-primary)', fontWeight: 600, letterSpacing: '0.5px' }}>MODERN OPERATIONS</span>
+            <span style={{ fontWeight: 800, fontSize: '1.25rem', color: '#0f172a', lineHeight: 1.1 }}>Operra</span>
+            <span style={{ fontSize: '0.65rem', color: '#7c3aed', fontWeight: 700, letterSpacing: '0.5px' }}>ERP PLATFORM</span>
           </div>
         </div>
 
+        {/* Nav Items */}
         <nav className="nav-menu">
           <button
             className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
             onClick={() => setActiveTab('overview')}
           >
-            <LayoutDashboard size={18} /> Overview Flow
+            <LayoutDashboard size={20} /> Dashboard
           </button>
           <button
             className={`nav-item ${activeTab === 'inventory' ? 'active' : ''}`}
             onClick={() => setActiveTab('inventory')}
           >
-            <Package size={18} /> Inventory
+            <Package size={20} /> Inventory
           </button>
           <button
             className={`nav-item ${activeTab === 'work-orders' ? 'active' : ''}`}
             onClick={() => setActiveTab('work-orders')}
           >
-            <ClipboardList size={18} /> Work Orders
+            <ClipboardList size={20} /> Work Orders
           </button>
           <button
             className={`nav-item ${activeTab === 'transfers' ? 'active' : ''}`}
             onClick={() => setActiveTab('transfers')}
           >
-            <ArrowLeftRight size={18} /> Internal Transfers
+            <ArrowLeftRight size={20} /> Stock Transfers
           </button>
           <button
             className={`nav-item ${activeTab === 'orders' ? 'active' : ''}`}
             onClick={() => setActiveTab('orders')}
           >
-            <ShoppingBag size={18} /> Customer Orders
+            <ShoppingBag size={20} /> Customer Orders
           </button>
         </nav>
 
-        {/* Home & User Info */}
+        {/* Footer Controls & User Info */}
         <div className="user-profile">
           <button
             className="btn btn-secondary"
             onClick={() => setShowLanding(true)}
-            style={{ width: '100%', marginBottom: '1rem', justifyContent: 'center', padding: '0.5rem', fontSize: '0.8rem' }}
+            style={{ width: '100%', justifyContent: 'center', padding: '0.6rem', fontSize: '0.825rem' }}
           >
-            <Globe size={14} /> Product Page
+            <Globe size={15} /> Product Page
           </button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-            <UserCheck size={18} className="text-muted" />
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              fontSize: '1rem',
+              boxShadow: '0 4px 12px rgba(124, 58, 237, 0.3)'
+            }}>
+              {user.name.charAt(0)}
+            </div>
             <div className="user-info">
               <span className="user-name">{user.name}</span>
-              <span className={`badge ${roleBadgeClass}`} style={{ marginTop: '0.2rem' }}>
+              <span className={`badge ${roleBadgeClass}`} style={{ marginTop: '0.15rem', alignSelf: 'flex-start' }}>
                 {user.role}
               </span>
             </div>
           </div>
-          <button className="btn-logout" onClick={logout}>
-            <LogOut size={16} /> Sign Out
-          </button>
+
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <button className="btn-logout" onClick={logout} style={{ flex: 1, justifyContent: 'center' }}>
+              <LogOut size={16} /> Log out
+            </button>
+
+            {/* Sun/Moon Theme Toggle Switch Pill */}
+            <div style={{
+              background: '#f1f5f9',
+              borderRadius: '9999px',
+              padding: '0.25rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.2rem',
+              border: '1px solid #e2e8f0',
+              cursor: 'pointer'
+            }} onClick={() => setDarkMode(!darkMode)}>
+              <div style={{
+                width: '26px',
+                height: '26px',
+                borderRadius: '50%',
+                background: !darkMode ? '#7c3aed' : 'transparent',
+                color: !darkMode ? '#ffffff' : '#64748b',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Sun size={14} />
+              </div>
+              <div style={{
+                width: '26px',
+                height: '26px',
+                borderRadius: '50%',
+                background: darkMode ? '#7c3aed' : 'transparent',
+                color: darkMode ? '#ffffff' : '#64748b',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Moon size={14} />
+              </div>
+            </div>
+          </div>
         </div>
       </aside>
 
-      {/* Main Screen Content */}
+      {/* Main Dashboard Screen Content */}
       <main className="main-content">
-        {activeTab === 'overview' && (
+        {/* Top Navbar Header */}
+        <header style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '2rem'
+        }}>
           <div>
-            <div style={{ marginBottom: '2rem' }}>
-              <h2 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '0.25rem' }}>Operational Hub & Guided Flow</h2>
-              <p style={{ color: 'var(--text-muted)' }}>Welcome to Operra. Use these shortcut modules to execute key ERP operations step-by-step.</p>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>
+              Welcome back, {user.name.split(' ')[0]}!
+            </h1>
+            <p style={{ color: '#64748b', fontSize: '0.9rem', marginTop: '0.2rem' }}>
+              Here is your multi-warehouse operations & inventory flow overview
+            </p>
+          </div>
+
+          {/* Header Right Actions */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {/* Search Icon Button */}
+            <button style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#64748b',
+              cursor: 'pointer'
+            }}>
+              <Search size={18} />
+            </button>
+
+            {/* Notification Bell */}
+            <div style={{ position: 'relative' }}>
+              <button style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#64748b',
+                cursor: 'pointer'
+              }}>
+                <Bell size={18} />
+              </button>
+              <span style={{
+                position: 'absolute',
+                top: '2px',
+                right: '2px',
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
+                background: '#ef4444',
+                border: '2px solid #ffffff'
+              }} />
             </div>
 
-            {/* Step-by-Step Flow Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
-              <div className="card" style={{ borderLeft: '4px solid #38bdf8', cursor: 'pointer' }} onClick={() => setActiveTab('inventory')}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                  <Package size={28} style={{ color: '#38bdf8' }} />
-                  <span className="badge badge-admin">Step 1</span>
-                </div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>1. Inventory Management</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-                  Inspect real-time stock across warehouses (`Physical - Reserved = Available`).
-                </p>
-                <span style={{ color: '#38bdf8', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  Open Inventory <Zap size={14} />
-                </span>
+            {/* User Profile Info Pill */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              padding: '0.4rem 0.85rem 0.4rem 0.5rem',
+              borderRadius: '9999px'
+            }}>
+              <div style={{
+                width: '34px',
+                height: '34px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 800,
+                fontSize: '0.9rem'
+              }}>
+                {user.name.charAt(0)}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a', lineHeight: 1.1 }}>{user.name}</span>
+                <span style={{ fontSize: '0.7rem', color: '#64748b' }}>{user.email}</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {activeTab === 'overview' && (
+          <div>
+            {/* Filter Bar Row */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '1.75rem'
+            }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.5rem 1rem',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                borderRadius: '9999px',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                color: '#0f172a'
+              }}>
+                <Calendar size={16} color="#7c3aed" /> This month
               </div>
 
-              <div className="card" style={{ borderLeft: '4px solid #eab308', cursor: 'pointer' }} onClick={() => setActiveTab('work-orders')}>
+              <div style={{ display: 'flex', gap: '0.75rem' }}>
+                <button className="btn btn-secondary" style={{ borderRadius: '9999px', padding: '0.5rem 1.1rem' }}>
+                  <SlidersHorizontal size={16} /> Manage widgets
+                </button>
+                <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setActiveTab('work-orders')}>
+                  <Plus size={18} /> Add new Work Order
+                </button>
+              </div>
+            </div>
+
+            {/* Top 4 Metric KPI Cards */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '1.25rem',
+              marginBottom: '1.75rem'
+            }}>
+              {/* Metric Card 1 */}
+              <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                  <ClipboardList size={28} style={{ color: '#eab308' }} />
-                  <span className="badge badge-ops">Step 2</span>
+                  <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Total Physical Stock</span>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }}>
+                    <ArrowUpRight size={16} />
+                  </div>
                 </div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>2. Work Orders & Stock Check</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-                  Create production work orders and automatically compute material shortages.
-                </p>
-                <span style={{ color: '#eab308', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  Open Work Orders <Zap size={14} />
-                </span>
+                <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.75rem' }}>
+                  1,225 <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Units</span>
+                </div>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+                  <TrendingUp size={14} /> +12.1% vs last month
+                </div>
               </div>
 
-              <div className="card" style={{ borderLeft: '4px solid #a855f7', cursor: 'pointer' }} onClick={() => setActiveTab('transfers')}>
+              {/* Metric Card 2 */}
+              <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                  <ArrowLeftRight size={28} style={{ color: '#a855f7' }} />
-                  <span className="badge badge-ops">Step 3</span>
+                  <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Available Inventory</span>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }}>
+                    <ArrowUpRight size={16} />
+                  </div>
                 </div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>3. Internal Stock Transfers</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-                  Fulfill shortages by dispatching and receiving stock between locations.
-                </p>
-                <span style={{ color: '#a855f7', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  Open Transfers <Zap size={14} />
-                </span>
+                <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.75rem' }}>
+                  945 <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Available</span>
+                </div>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+                  <TrendingUp size={14} /> +6.3% vs last month
+                </div>
               </div>
 
-              <div className="card" style={{ borderLeft: '4px solid #22c55e', cursor: 'pointer' }} onClick={() => setActiveTab('orders')}>
+              {/* Metric Card 3 */}
+              <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                  <ShoppingBag size={28} style={{ color: '#22c55e' }} />
-                  <span className="badge badge-sales">Step 4</span>
+                  <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Material Shortage</span>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }}>
+                    <ArrowUpRight size={16} />
+                  </div>
                 </div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>4. Customer Reservations</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-                  Create sales orders and safely reserve available inventory.
-                </p>
-                <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                  Open Customer Orders <Zap size={14} />
-                </span>
+                <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.75rem' }}>
+                  60 <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Shortage</span>
+                </div>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#fef2f2', color: '#dc2626', padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+                  <TrendingDown size={14} /> -2.4% vs last month
+                </div>
+              </div>
+
+              {/* Metric Card 4 */}
+              <div className="card" style={{ marginBottom: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Reserved Stock</span>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer' }}>
+                    <ArrowUpRight size={16} />
+                  </div>
+                </div>
+                <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.75rem' }}>
+                  280 <span style={{ fontSize: '1rem', color: '#94a3b8', fontWeight: 500 }}>Reserved</span>
+                </div>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+                  <TrendingUp size={14} /> +12.1% vs last month
+                </div>
+              </div>
+            </div>
+
+            {/* Middle Section: Chart & Category Distribution Widget */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '2fr 1fr',
+              gap: '1.5rem',
+              marginBottom: '1.75rem'
+            }}>
+              {/* Operations Flow Bar Chart Card */}
+              <div className="card" style={{ marginBottom: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Inventory Stock Flow</h3>
+                    <div style={{ display: 'flex', gap: '1rem', marginTop: '0.25rem', fontSize: '0.8rem' }}>
+                      <span style={{ color: '#7c3aed', fontWeight: 600 }}>● Physical Stock</span>
+                      <span style={{ color: '#c084fc', fontWeight: 600 }}>● Reserved Stock</span>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <select style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}>
+                      <option>All Warehouses</option>
+                      <option>Main Warehouse</option>
+                      <option>North Hub</option>
+                      <option>South Branch</option>
+                    </select>
+                    <select style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}>
+                      <option>This year</option>
+                      <option>2026</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Styled Bar Chart Graphic */}
+                <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '180px', padding: '1rem 0', borderBottom: '1px solid #f1f5f9' }}>
+                  {/* Month 1 */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
+                      <div style={{ width: '16px', height: '70%', background: '#7c3aed', borderRadius: '4px' }} />
+                      <div style={{ width: '16px', height: '50%', background: '#c084fc', borderRadius: '4px' }} />
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Jan</span>
+                  </div>
+
+                  {/* Month 2 */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
+                      <div style={{ width: '16px', height: '85%', background: '#7c3aed', borderRadius: '4px' }} />
+                      <div style={{ width: '16px', height: '60%', background: '#c084fc', borderRadius: '4px' }} />
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Feb</span>
+                  </div>
+
+                  {/* Month 3 Active Hover Bar */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1, position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-30px', background: '#0f172a', color: '#ffffff', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', fontSize: '0.7rem', fontWeight: 700 }}>
+                      10,000 Qty
+                    </div>
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
+                      <div style={{ width: '16px', height: '95%', background: '#7c3aed', borderRadius: '4px' }} />
+                      <div style={{ width: '16px', height: '75%', background: '#c084fc', borderRadius: '4px' }} />
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: '#7c3aed', fontWeight: 700 }}>Mar</span>
+                  </div>
+
+                  {/* Month 4 */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
+                      <div style={{ width: '16px', height: '80%', background: '#7c3aed', borderRadius: '4px' }} />
+                      <div style={{ width: '16px', height: '55%', background: '#c084fc', borderRadius: '4px' }} />
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Apr</span>
+                  </div>
+
+                  {/* Month 5 */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
+                      <div style={{ width: '16px', height: '90%', background: '#7c3aed', borderRadius: '4px' }} />
+                      <div style={{ width: '16px', height: '65%', background: '#c084fc', borderRadius: '4px' }} />
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>May</span>
+                  </div>
+
+                  {/* Month 6 */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
+                      <div style={{ width: '16px', height: '65%', background: '#7c3aed', borderRadius: '4px' }} />
+                      <div style={{ width: '16px', height: '40%', background: '#c084fc', borderRadius: '4px' }} />
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 600 }}>Jun</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Category Distribution Donut Widget */}
+              <div className="card" style={{ marginBottom: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Category Breakdown</h3>
+                  <ArrowUpRight size={18} color="#94a3b8" />
+                </div>
+
+                {/* Donut Graphic */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', margin: '1rem 0' }}>
+                  <div style={{ position: 'relative', width: '110px', height: '110px' }}>
+                    <svg width="110" height="110" viewBox="0 0 36 36">
+                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ddd6fe" strokeWidth="3.8" />
+                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#7c3aed" strokeWidth="3.8" strokeDasharray="65, 100" />
+                    </svg>
+                    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                      <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 600 }}>Total</span>
+                      <span style={{ fontSize: '1rem', fontWeight: 800, color: '#0f172a' }}>1,225</span>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.75rem' }}>
+                    <div style={{ color: '#64748b' }}><span style={{ color: '#7c3aed' }}>●</span> Electronics (45%)</div>
+                    <div style={{ color: '#64748b' }}><span style={{ color: '#a855f7' }}>●</span> Raw Hardware (30%)</div>
+                    <div style={{ color: '#64748b' }}><span style={{ color: '#38bdf8' }}>●</span> Packaging (15%)</div>
+                    <div style={{ color: '#64748b' }}><span style={{ color: '#f59e0b' }}>●</span> Sensors (10%)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Section: Recent Activity Table & Fulfillment Goals */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '2fr 1fr',
+              gap: '1.5rem'
+            }}>
+              {/* Recent Transactions / Activity Card */}
+              <div className="card" style={{ marginBottom: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Recent ERP Operations</h3>
+                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    <select style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}>
+                      <option>All accounts</option>
+                    </select>
+                    <span style={{ fontSize: '0.85rem', color: '#7c3aed', fontWeight: 700, cursor: 'pointer' }} onClick={() => setActiveTab('inventory')}>
+                      See all ›
+                    </span>
+                  </div>
+                </div>
+
+                <div className="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>DATE</th>
+                        <th>QTY</th>
+                        <th>ITEM / OPERATION</th>
+                        <th>LOCATION</th>
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>21 Aug 21:30</td>
+                        <td style={{ fontWeight: 800, color: '#dc2626' }}>- 60</td>
+                        <td>
+                          <div style={{ fontWeight: 700 }}>Microprocessor Work Order</div>
+                        </td>
+                        <td style={{ fontSize: '0.85rem', color: '#64748b' }}>Main Warehouse</td>
+                        <td>
+                          <span className="badge badge-status-in-progress">IN_PROGRESS</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>21 Aug 20:15</td>
+                        <td style={{ fontWeight: 800, color: '#059669' }}>+ 40</td>
+                        <td>
+                          <div style={{ fontWeight: 700 }}>CPU Stock Transfer</div>
+                        </td>
+                        <td style={{ fontSize: '0.85rem', color: '#64748b' }}>North Hub → Main</td>
+                        <td>
+                          <span className="badge badge-dispatched">DISPATCHED</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>21 Aug 19:40</td>
+                        <td style={{ fontWeight: 800, color: '#d97706' }}>30 Reserved</td>
+                        <td>
+                          <div style={{ fontWeight: 700 }}>ORD-2026-1001 Sales Order</div>
+                        </td>
+                        <td style={{ fontSize: '0.85rem', color: '#64748b' }}>Main Warehouse</td>
+                        <td>
+                          <span className="badge badge-received">RESERVED</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Fulfillment Goals Progress Bar Card */}
+              <div className="card" style={{ marginBottom: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Operational Targets</h3>
+                  <ArrowUpRight size={18} color="#94a3b8" />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem' }}>
+                      <span style={{ color: '#0f172a' }}>Work Orders Completed</span>
+                      <span style={{ color: '#7c3aed' }}>85%</span>
+                    </div>
+                    <div style={{ width: '100%', height: '8px', background: '#f1f5f9', borderRadius: '9999px', overflow: 'hidden' }}>
+                      <div style={{ width: '85%', height: '100%', background: '#7c3aed', borderRadius: '9999px' }} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem' }}>
+                      <span style={{ color: '#0f172a' }}>Transfers Received</span>
+                      <span style={{ color: '#7c3aed' }}>92%</span>
+                    </div>
+                    <div style={{ width: '100%', height: '8px', background: '#f1f5f9', borderRadius: '9999px', overflow: 'hidden' }}>
+                      <div style={{ width: '92%', height: '100%', background: '#7c3aed', borderRadius: '9999px' }} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.4rem' }}>
+                      <span style={{ color: '#0f172a' }}>Customer Orders Stocked</span>
+                      <span style={{ color: '#7c3aed' }}>64%</span>
+                    </div>
+                    <div style={{ width: '100%', height: '8px', background: '#f1f5f9', borderRadius: '9999px', overflow: 'hidden' }}>
+                      <div style={{ width: '64%', height: '100%', background: '#7c3aed', borderRadius: '9999px' }} />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         )}
+
         {activeTab === 'inventory' && <Inventory />}
         {activeTab === 'work-orders' && <WorkOrders />}
         {activeTab === 'transfers' && <InternalTransfers />}
