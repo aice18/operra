@@ -612,17 +612,106 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
         </div>
       </section>
 
-      {/* Footer Banner */}
+      {/* Comprehensive Rich Footer */}
       <footer style={{
-        borderTop: '1px solid rgba(139, 92, 246, 0.2)',
-        padding: '2.5rem 4rem',
-        textAlign: 'center',
-        color: '#64748b',
-        fontSize: '0.9rem',
+        borderTop: '1px solid rgba(139, 92, 246, 0.25)',
+        background: 'rgba(13, 7, 32, 0.95)',
+        backdropFilter: 'blur(12px)',
+        padding: '4rem 4rem 2rem',
         position: 'relative',
         zIndex: 5
       }}>
-        <p>Operra Mini Operations ERP © 2026. Built with React, Express, Prisma & PostgreSQL.</p>
+        <div style={{
+          maxWidth: '1350px',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr 1fr 1.5fr',
+          gap: '3.5rem',
+          marginBottom: '3rem'
+        }}>
+          {/* Column 1: Brand Info */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
+              <div style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '0.6rem',
+                background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 0 15px rgba(168, 85, 247, 0.4)'
+              }}>
+                <Boxes size={20} color="#ffffff" />
+              </div>
+              <span style={{ fontWeight: 800, fontSize: '1.35rem', color: '#ffffff', letterSpacing: '-0.5px' }}>Operra</span>
+            </div>
+            <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: 1.6, maxWidth: '340px', marginBottom: '1.5rem' }}>
+              Production-oriented Operations ERP platform for multi-location inventory control, production work orders, and transactional stock reservations.
+            </p>
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <span className="badge badge-admin">ACID Compliant</span>
+              <span className="badge badge-ops">Multi-Tenant Ready</span>
+            </div>
+          </div>
+
+          {/* Column 2: ERP Modules */}
+          <div>
+            <h4 style={{ color: '#ffffff', fontWeight: 700, fontSize: '1rem', marginBottom: '1.25rem' }}>ERP Modules</h4>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.9rem', color: '#94a3b8' }}>
+              <li><a href="#inventory" onClick={onGoToLogin} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Inventory Tracking</a></li>
+              <li><a href="#work-orders" onClick={onGoToLogin} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Work Orders</a></li>
+              <li><a href="#transfers" onClick={onGoToLogin} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Internal Stock Transfers</a></li>
+              <li><a href="#orders" onClick={onGoToLogin} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Customer Reservations</a></li>
+            </ul>
+          </div>
+
+          {/* Column 3: Architecture & Security */}
+          <div>
+            <h4 style={{ color: '#ffffff', fontWeight: 700, fontSize: '1rem', marginBottom: '1.25rem' }}>Architecture</h4>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.9rem', color: '#94a3b8' }}>
+              <li>React 18 + Vite</li>
+              <li>Express API Server</li>
+              <li>Prisma ORM</li>
+              <li>PostgreSQL DB</li>
+              <li>JWT Role Guards</li>
+            </ul>
+          </div>
+
+          {/* Column 4: Portal Access & Credentials */}
+          <div>
+            <h4 style={{ color: '#ffffff', fontWeight: 700, fontSize: '1rem', marginBottom: '1.25rem' }}>Demo Portal Access</h4>
+            <p style={{ color: '#94a3b8', fontSize: '0.85rem', lineHeight: 1.5, marginBottom: '1rem' }}>
+              Test default credentials are pre-seeded into the database:
+            </p>
+            <div style={{ background: 'rgba(23, 14, 45, 0.8)', padding: '0.85rem', borderRadius: '0.5rem', border: '1px solid rgba(139, 92, 246, 0.2)', fontSize: '0.8rem', color: '#c084fc' }}>
+              <div><strong>Admin:</strong> admin@erp.com</div>
+              <div><strong>Ops:</strong> ops@erp.com</div>
+              <div><strong>Sales:</strong> sales@erp.com</div>
+              <div style={{ color: '#94a3b8', marginTop: '0.25rem' }}>Password: <code>password123</code></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Copyright Strip */}
+        <div style={{
+          maxWidth: '1350px',
+          margin: '0 auto',
+          paddingTop: '2rem',
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          color: '#64748b',
+          fontSize: '0.85rem'
+        }}>
+          <p>Operra Operations ERP © 2026. Designed with Precision, Built for Scale.</p>
+          <div style={{ display: 'flex', gap: '1.5rem' }}>
+            <span style={{ cursor: 'pointer' }} onClick={onGoToLogin}>Privacy Policy</span>
+            <span style={{ cursor: 'pointer' }} onClick={onGoToLogin}>Terms of Service</span>
+            <span style={{ cursor: 'pointer' }} onClick={onGoToLogin}>Documentation</span>
+          </div>
+        </div>
       </footer>
     </div>
   );
