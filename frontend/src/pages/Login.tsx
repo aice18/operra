@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Lock, Mail, ArrowRight, Server } from 'lucide-react';
+import { Lock, Mail, ArrowRight } from 'lucide-react';
+import logoImg from '../assets/logo.png';
 
 export const Login: React.FC = () => {
   const { login } = useAuth();
@@ -31,8 +32,8 @@ export const Login: React.FC = () => {
     <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0f172a', padding: '1rem' }}>
       <div className="card" style={{ width: '100%', maxWidth: '440px' }}>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{ display: 'inline-flex', padding: '0.75rem', borderRadius: '1rem', backgroundColor: '#3b82f620', color: '#3b82f6', marginBottom: '1rem' }}>
-            <Server size={32} />
+          <div style={{ display: 'inline-flex', padding: '0.5rem', borderRadius: '1.25rem', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', marginBottom: '1rem' }}>
+            <img src={logoImg} alt="Operra Logo" style={{ width: '64px', height: '64px', borderRadius: '0.85rem', objectFit: 'cover' }} />
           </div>
           <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.25rem' }}>Operra</h2>
           <p style={{ color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.5rem' }}>Modern Operations, One Platform</p>

@@ -11,9 +11,10 @@ import {
   ArrowLeftRight,
   ShoppingBag,
   LogOut,
-  Server,
   UserCheck,
 } from 'lucide-react';
+
+import logoImg from './assets/logo.png';
 
 export const App: React.FC = () => {
   const { user, logout, loading } = useAuth();
@@ -45,7 +46,7 @@ export const App: React.FC = () => {
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="sidebar-brand">
-          <Server size={24} />
+          <img src={logoImg} alt="Operra Logo" style={{ width: '32px', height: '32px', borderRadius: '0.4rem', objectFit: 'cover' }} />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span style={{ fontWeight: 800, fontSize: '1.2rem', color: '#ffffff' }}>Operra</span>
             <span style={{ fontSize: '0.65rem', color: 'var(--accent-primary)', fontWeight: 600, letterSpacing: '0.5px' }}>MODERN OPERATIONS</span>
