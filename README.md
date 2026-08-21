@@ -6,9 +6,9 @@ A production-oriented, full-stack Operations ERP built with **Node.js, TypeScrip
 
 ## 🌐 Live Deployments
 - **Frontend App (Vercel)**: [https://frontend-two-alpha-19.vercel.app/](https://frontend-two-alpha-19.vercel.app/)
-- **Backend API (Render)**: [https://operra-0cij.onrender.com](https://operra-0cij.onrender.com)
-- **API Health Check**: [https://operra-0cij.onrender.com/health](https://operra-0cij.onrender.com/health)
-- **Swagger API Docs**: [https://operra-0cij.onrender.com/api-docs](https://operra-0cij.onrender.com/api-docs)
+- **Backend API (Render)**: [https://operra-menw.onrender.com](https://operra-menw.onrender.com)
+- **API Health Check**: [https://operra-menw.onrender.com/health](https://operra-menw.onrender.com/health)
+- **Swagger API Docs**: [https://operra-menw.onrender.com/api-docs](https://operra-menw.onrender.com/api-docs)
 
 ---
 
@@ -16,7 +16,7 @@ A production-oriented, full-stack Operations ERP built with **Node.js, TypeScrip
 
 ### Frontend (`frontend/.env`)
 ```env
-VITE_API_URL="https://operra-0cij.onrender.com"
+VITE_API_URL="https://operra-menw.onrender.com"
 ```
 
 ### Backend (`backend/.env`)
