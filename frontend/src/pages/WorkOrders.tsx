@@ -157,36 +157,35 @@ export const WorkOrders: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Table Card Container */}
+      {/* Main Table Card Container - Fits 100% without horizontal scrollbar */}
       <div className="card" style={{ marginBottom: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Work Orders & Material Stock Matrix</h3>
           <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{workOrders.length} Active Records</span>
         </div>
 
-        <div className="table-container">
-          <table>
+        <div className="table-container" style={{ overflowX: 'hidden' }}>
+          <table style={{ width: '100%', tableLayout: 'fixed' }}>
             <thead>
               <tr>
-                <th style={{ minWidth: '180px' }}>Location</th>
-                <th style={{ minWidth: '220px' }}>Item</th>
-                <th style={{ textAlign: 'center', minWidth: '110px' }}>Required Qty</th>
-                <th style={{ textAlign: 'center', minWidth: '120px' }}>Available Stock</th>
-                <th style={{ minWidth: '190px' }}>Calculated Shortage</th>
-                <th style={{ minWidth: '140px' }}>Status</th>
-                <th style={{ minWidth: '150px' }}>Actions</th>
+                <th style={{ width: '22%' }}>Location</th>
+                <th style={{ width: '24%' }}>Item</th>
+                <th style={{ textAlign: 'center', width: '10%' }}>Req Qty</th>
+                <th style={{ textAlign: 'center', width: '10%' }}>Avail Qty</th>
+                <th style={{ width: '18%' }}>Stock Shortage</th>
+                <th style={{ width: '16%' }}>Status & Action</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     Loading work orders...
                   </td>
                 </tr>
               ) : workOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     No work orders created yet.
                   </td>
                 </tr>
@@ -202,43 +201,43 @@ export const WorkOrders: React.FC = () => {
                   return (
                     <tr key={wo.id}>
                       <td>
-                        <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{wo.location.name}</div>
+                        <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{wo.location.name}</div>
                         <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{wo.location.code}</div>
                       </td>
                       <td>
-                        <div style={{ fontWeight: 600, color: '#0f172a' }}>{wo.item.name}</div>
+                        <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.875rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{wo.item.name}</div>
                         <div style={{ fontSize: '0.75rem', color: '#7c3aed' }}>{wo.item.sku}</div>
                       </td>
-                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#0f172a' }}>
+                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>
                         {wo.requiredQuantity}
                       </td>
-                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#0284c7' }}>
+                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.9rem', color: '#0284c7' }}>
                         {wo.availableAtLocation}
                       </td>
                       <td>
                         {wo.shortageQuantity > 0 ? (
-                          <span className="chip-shortage">
-                            <AlertTriangle size={15} /> Shortage = {wo.shortageQuantity}
+                          <span className="chip-shortage" style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>
+                            <AlertTriangle size={13} /> Shortage = {wo.shortageQuantity}
                           </span>
                         ) : (
-                          <span className="chip-instock">
-                            <CheckCircle2 size={15} /> In Stock
+                          <span className="chip-instock" style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>
+                            <CheckCircle2 size={13} /> In Stock
                           </span>
                         )}
                       </td>
                       <td>
-                        <span className={`badge ${statusClass}`}>{wo.status}</span>
-                      </td>
-                      <td>
-                        {canUpdateStatus && (
+                        {canUpdateStatus ? (
                           <select
                             value={wo.status}
+                            style={{ padding: '0.3rem 0.5rem', fontSize: '0.8rem', width: '100%' }}
                             onChange={(e) => updateStatus(wo.id, e.target.value)}
                           >
                             <option value="ASSIGNED">ASSIGNED</option>
                             <option value="IN_PROGRESS">IN_PROGRESS</option>
                             <option value="COMPLETED">COMPLETED</option>
                           </select>
+                        ) : (
+                          <span className={`badge ${statusClass}`}>{wo.status}</span>
                         )}
                       </td>
                     </tr>

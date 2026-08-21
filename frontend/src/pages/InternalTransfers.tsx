@@ -168,36 +168,35 @@ export const InternalTransfers: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Table Card Container */}
+      {/* Main Table Card Container - Fits 100% without horizontal scrollbar */}
       <div className="card" style={{ marginBottom: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Internal Stock Transfer Log</h3>
           <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{transfers.length} Active Records</span>
         </div>
 
-        <div className="table-container">
-          <table>
+        <div className="table-container" style={{ overflowX: 'hidden' }}>
+          <table style={{ width: '100%', tableLayout: 'fixed' }}>
             <thead>
               <tr>
-                <th style={{ minWidth: '130px' }}>Transfer ID</th>
-                <th style={{ minWidth: '200px' }}>Source Location</th>
-                <th style={{ minWidth: '200px' }}>Destination Location</th>
-                <th style={{ minWidth: '220px' }}>Item</th>
-                <th style={{ textAlign: 'center', minWidth: '100px' }}>Quantity</th>
-                <th style={{ minWidth: '130px' }}>Status</th>
-                <th style={{ minWidth: '150px' }}>Action</th>
+                <th style={{ width: '14%' }}>Transfer ID</th>
+                <th style={{ width: '22%' }}>Source → Destination</th>
+                <th style={{ width: '26%' }}>Item</th>
+                <th style={{ textAlign: 'center', width: '10%' }}>Qty</th>
+                <th style={{ width: '14%' }}>Status</th>
+                <th style={{ width: '14%' }}>Action</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     Loading transfer requests...
                   </td>
                 </tr>
               ) : transfers.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     No internal transfers recorded.
                   </td>
                 </tr>
@@ -205,53 +204,51 @@ export const InternalTransfers: React.FC = () => {
                 transfers.map((t) => (
                   <tr key={t.id}>
                     <td>
-                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#7c3aed', fontWeight: 600 }}>{t.id.substring(0, 8)}...</code>
+                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.4rem', borderRadius: '0.35rem', color: '#7c3aed', fontWeight: 600, fontSize: '0.75rem' }}>{t.id.substring(0, 8)}</code>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{t.sourceLocation.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{t.sourceLocation.code}</div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.875rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.sourceLocation.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>→ {t.destinationLocation.name}</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{t.destinationLocation.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{t.destinationLocation.code}</div>
-                    </td>
-                    <td>
-                      <div style={{ fontWeight: 600, color: '#0f172a' }}>{t.item.name}</div>
+                      <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.875rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.item.name}</div>
                       <div style={{ fontSize: '0.75rem', color: '#0284c7' }}>{t.item.sku}</div>
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#0f172a' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>
                       {t.quantity}
                     </td>
                     <td>
                       <span className={`badge badge-${t.status.toLowerCase()}`}>{t.status}</span>
                     </td>
                     <td>
-                      {canManage && (
+                      {canManage ? (
                         <div>
                           {t.status === 'REQUESTED' && (
                             <button
                               className="btn btn-warning"
-                              style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
+                              style={{ padding: '0.3rem 0.65rem', fontSize: '0.75rem' }}
                               onClick={() => handleDispatch(t.id)}
                             >
-                              <Truck size={14} /> Dispatch
+                              <Truck size={13} /> Dispatch
                             </button>
                           )}
                           {t.status === 'DISPATCHED' && (
                             <button
                               className="btn btn-success"
-                              style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
+                              style={{ padding: '0.3rem 0.65rem', fontSize: '0.75rem' }}
                               onClick={() => handleReceive(t.id)}
                             >
-                              <CheckCircle2 size={14} /> Receive Stock
+                              <CheckCircle2 size={13} /> Receive
                             </button>
                           )}
                           {t.status === 'RECEIVED' && (
-                            <span style={{ fontSize: '0.8rem', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
-                              <CheckCircle2 size={14} /> Completed
+                            <span style={{ fontSize: '0.75rem', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                              <CheckCircle2 size={13} /> Done
                             </span>
                           )}
                         </div>
+                      ) : (
+                        <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>View Only</span>
                       )}
                     </td>
                   </tr>

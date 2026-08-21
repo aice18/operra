@@ -151,23 +151,23 @@ export const CustomerOrders: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Table Card Container */}
+      {/* Main Table Card Container - Fits 100% without horizontal scrollbar */}
       <div className="card" style={{ marginBottom: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Customer Order Reservation Log</h3>
           <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{orders.length} Active Records</span>
         </div>
 
-        <div className="table-container">
-          <table>
+        <div className="table-container" style={{ overflowX: 'hidden' }}>
+          <table style={{ width: '100%', tableLayout: 'fixed' }}>
             <thead>
               <tr>
-                <th style={{ minWidth: '150px' }}>Order Number</th>
-                <th style={{ minWidth: '220px' }}>Created By</th>
-                <th style={{ minWidth: '240px' }}>Reserved Items</th>
-                <th style={{ textAlign: 'center', minWidth: '130px' }}>Total Reserved Qty</th>
-                <th style={{ minWidth: '140px' }}>Status</th>
-                <th style={{ minWidth: '160px' }}>Created Date</th>
+                <th style={{ width: '16%' }}>Order Number</th>
+                <th style={{ width: '22%' }}>Created By</th>
+                <th style={{ width: '30%' }}>Reserved Items</th>
+                <th style={{ textAlign: 'center', width: '10%' }}>Total Qty</th>
+                <th style={{ width: '11%' }}>Status</th>
+                <th style={{ width: '11%' }}>Date</th>
               </tr>
             </thead>
             <tbody>
@@ -187,30 +187,30 @@ export const CustomerOrders: React.FC = () => {
                 orders.map((ord) => (
                   <tr key={ord.id}>
                     <td>
-                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#0284c7', fontWeight: 600 }}>{ord.orderNumber}</code>
+                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.4rem', borderRadius: '0.35rem', color: '#0284c7', fontWeight: 600, fontSize: '0.75rem' }}>{ord.orderNumber}</code>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{ord.createdBy.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{ord.createdBy.email}</div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.875rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ord.createdBy.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ord.createdBy.email}</div>
                     </td>
                     <td>
                       {ord.orderItems.map((oi: any) => (
-                        <div key={oi.id} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
-                          <span style={{ fontWeight: 500, color: '#0f172a' }}>{oi.item.name}</span>
-                          <span className="badge badge-ops" style={{ padding: '0.15rem 0.45rem', fontSize: '0.7rem' }}>{oi.quantity} units</span>
+                        <div key={oi.id} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', marginBottom: '0.15rem' }}>
+                          <span style={{ fontWeight: 500, color: '#0f172a', fontSize: '0.8rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{oi.item.name}</span>
+                          <span className="badge badge-ops" style={{ padding: '0.1rem 0.35rem', fontSize: '0.65rem' }}>{oi.quantity} units</span>
                         </div>
                       ))}
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '1rem', color: '#0f172a' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '0.9rem', color: '#0f172a' }}>
                       {ord.orderItems.reduce((acc: number, item: any) => acc + item.quantity, 0)}
                     </td>
                     <td>
-                      <span className="badge badge-received" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                        <ShieldCheck size={14} /> {ord.status}
+                      <span className="badge badge-received" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem', padding: '0.25rem 0.5rem', fontSize: '0.65rem' }}>
+                        <ShieldCheck size={12} /> {ord.status}
                       </span>
                     </td>
-                    <td style={{ color: '#64748b', fontSize: '0.825rem' }}>
-                      {new Date(ord.createdAt).toLocaleString()}
+                    <td style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                      {new Date(ord.createdAt).toLocaleDateString()}
                     </td>
                   </tr>
                 ))

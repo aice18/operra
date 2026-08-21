@@ -149,24 +149,24 @@ export const Inventory: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Table Card Container */}
+      {/* Main Table Card Container - Fits 100% without horizontal scrollbar */}
       <div className="card" style={{ marginBottom: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Warehouse Inventory Ledger</h3>
           <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{inventories.length} Batch Records</span>
         </div>
 
-        <div className="table-container">
-          <table>
+        <div className="table-container" style={{ overflowX: 'hidden' }}>
+          <table style={{ width: '100%', tableLayout: 'fixed' }}>
             <thead>
               <tr>
-                <th style={{ minWidth: '180px' }}>Location</th>
-                <th style={{ minWidth: '220px' }}>Item & Category</th>
-                <th style={{ minWidth: '140px' }}>SKU</th>
-                <th style={{ minWidth: '150px' }}>Batch Number</th>
-                <th style={{ textAlign: 'center', minWidth: '110px' }}>Physical Qty</th>
-                <th style={{ textAlign: 'center', minWidth: '110px' }}>Reserved Qty</th>
-                <th style={{ textAlign: 'center', minWidth: '110px' }}>Available Qty</th>
+                <th style={{ width: '22%' }}>Location</th>
+                <th style={{ width: '28%' }}>Item & Category</th>
+                <th style={{ width: '16%' }}>SKU</th>
+                <th style={{ width: '16%' }}>Batch Number</th>
+                <th style={{ textAlign: 'center', width: '6%' }}>Physical</th>
+                <th style={{ textAlign: 'center', width: '6%' }}>Reserved</th>
+                <th style={{ textAlign: 'center', width: '6%' }}>Available</th>
               </tr>
             </thead>
             <tbody>
@@ -186,26 +186,26 @@ export const Inventory: React.FC = () => {
                 inventories.map((inv) => (
                   <tr key={inv.id}>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{inv.location.name}</div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{inv.location.name}</div>
                       <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{inv.location.code}</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.25rem' }}>{inv.item.name}</div>
-                      <span className="badge badge-ops">{inv.item.category.name}</span>
+                      <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.875rem', marginBottom: '0.2rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{inv.item.name}</div>
+                      <span className="badge badge-ops" style={{ fontSize: '0.65rem', padding: '0.15rem 0.45rem' }}>{inv.item.category.name}</span>
                     </td>
                     <td>
-                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#7c3aed', fontWeight: 600 }}>{inv.item.sku}</code>
+                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.4rem', borderRadius: '0.35rem', color: '#7c3aed', fontWeight: 600, fontSize: '0.75rem' }}>{inv.item.sku}</code>
                     </td>
                     <td>
-                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#0284c7', fontWeight: 600 }}>{inv.batchNumber}</code>
+                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.4rem', borderRadius: '0.35rem', color: '#0284c7', fontWeight: 600, fontSize: '0.75rem' }}>{inv.batchNumber}</code>
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#0f172a' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>
                       {inv.physicalQuantity}
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#d97706' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.9rem', color: '#d97706' }}>
                       {inv.reservedQuantity}
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '1.05rem', color: inv.availableQuantity > 0 ? '#059669' : '#dc2626' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '0.95rem', color: inv.availableQuantity > 0 ? '#059669' : '#dc2626' }}>
                       {inv.availableQuantity}
                     </td>
                   </tr>
