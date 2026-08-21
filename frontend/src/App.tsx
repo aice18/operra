@@ -46,7 +46,10 @@ export const App: React.FC = () => {
       <aside className="sidebar">
         <div className="sidebar-brand">
           <Server size={24} />
-          <span>Operations ERP</span>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontWeight: 800, fontSize: '1.2rem', color: '#ffffff' }}>Operra</span>
+            <span style={{ fontSize: '0.65rem', color: 'var(--accent-primary)', fontWeight: 600, letterSpacing: '0.5px' }}>MODERN OPERATIONS</span>
+          </div>
         </div>
 
         <nav className="nav-menu">

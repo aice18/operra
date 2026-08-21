@@ -1,6 +1,6 @@
-# Mini Operations ERP
+# Operra — Modern Operations, One Platform
 
-A production-oriented, full-stack **Mini Operations ERP** built with **Node.js, TypeScript, Express, Prisma ORM, SQLite/PostgreSQL**, and a **React (TypeScript + Vite)** frontend.
+A production-oriented, full-stack Operations ERP built with **Node.js, TypeScript, Express, Prisma ORM, SQLite/PostgreSQL**, and a **React (TypeScript + Vite)** frontend.
 
 ---
 

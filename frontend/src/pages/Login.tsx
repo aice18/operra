@@ -34,8 +34,9 @@ export const Login: React.FC = () => {
           <div style={{ display: 'inline-flex', padding: '0.75rem', borderRadius: '1rem', backgroundColor: '#3b82f620', color: '#3b82f6', marginBottom: '1rem' }}>
             <Server size={32} />
           </div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>Mini Operations ERP</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Sign in to access inventory & order portal</p>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.25rem' }}>Operra</h2>
+          <p style={{ color: 'var(--accent-primary)', fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.5rem' }}>Modern Operations, One Platform</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Sign in to access inventory & order management</p>
         </div>
 
         {error && <div className="alert-error">{error}</div>}
