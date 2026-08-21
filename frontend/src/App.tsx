@@ -37,7 +37,7 @@ export const App: React.FC = () => {
   );
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
-  // Live Data State for Dashboard
+  // Live Data State for Dashboard Overview
   const [inventories, setInventories] = useState<any[]>([]);
   const [workOrders, setWorkOrders] = useState<any[]>([]);
   const [transfers, setTransfers] = useState<any[]>([]);
@@ -69,7 +69,7 @@ export const App: React.FC = () => {
     if (user) {
       fetchDashboardData();
     }
-  }, [user, activeTab]);
+  }, [user]);
 
   if (authLoading) {
     return (
@@ -102,7 +102,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="app-container">
-      {/* Left Sidebar Navigation */}
+      {/* Left Sidebar Navigation - Fixed & Persistent */}
       <aside className="sidebar">
         {/* Brand Logo */}
         <div className="sidebar-brand">
@@ -238,25 +238,33 @@ export const App: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Dashboard Screen Content */}
+      {/* Main Container - Persistent Header across ALL tabs */}
       <main className="main-content">
-        {/* Top Navbar Header */}
+        {/* Top Navbar Header - Always visible across every page */}
         <header style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '2rem'
+          marginBottom: '1.75rem'
         }}>
           <div>
             <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.5px' }}>
-              Welcome back, {user.name.split(' ')[0]}!
+              {activeTab === 'overview' && `Welcome back, ${user.name.split(' ')[0]}!`}
+              {activeTab === 'inventory' && 'Multi-Location Inventory Control'}
+              {activeTab === 'work-orders' && 'Production Work Orders & Shortages'}
+              {activeTab === 'transfers' && 'Internal Stock Transfer Pipeline'}
+              {activeTab === 'orders' && 'Customer Sales Orders & Reservations'}
             </h1>
             <p style={{ color: '#64748b', fontSize: '0.9rem', marginTop: '0.2rem' }}>
-              Here is your multi-warehouse operations & inventory flow overview
+              {activeTab === 'overview' && 'Here is your multi-warehouse operations & inventory flow overview'}
+              {activeTab === 'inventory' && 'Real-time physical, reserved & available stock breakdown across all locations'}
+              {activeTab === 'work-orders' && 'Production assignment lifecycle and automated material shortage calculation'}
+              {activeTab === 'transfers' && '3-stage stock transfer workflow: Requested → Dispatched → Received'}
+              {activeTab === 'orders' && 'Sales order reservations with ACID stock allocation rules'}
             </p>
           </div>
 
-          {/* Header Right Actions */}
+          {/* Header Right Actions - Identical layout across all pages */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <button style={{
               width: '42px',
@@ -269,7 +277,7 @@ export const App: React.FC = () => {
               justifyContent: 'center',
               color: '#64748b',
               cursor: 'pointer'
-            }} onClick={fetchDashboardData}>
+            }} onClick={fetchDashboardData} title="Sync Real Data">
               <RefreshCw size={18} className={dashboardLoading ? 'spin' : ''} />
             </button>
 
@@ -315,6 +323,7 @@ export const App: React.FC = () => {
               }} />
             </div>
 
+            {/* User Badge Pill */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -340,12 +349,13 @@ export const App: React.FC = () => {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0f172a', lineHeight: 1.1 }}>{user.name}</span>
-                <span style={{ fontSize: '0.7rem', color: '#64748b' }}>{user.email}</span>
+                <span style={{ fontSize: '0.7rem', color: '#7c3aed', fontWeight: 700 }}>{user.role}</span>
               </div>
             </div>
           </div>
         </header>
 
+        {/* Tab 1: Dashboard Overview */}
         {activeTab === 'overview' && (
           <div>
             {/* Filter Bar Row */}
@@ -374,9 +384,19 @@ export const App: React.FC = () => {
                 <button className="btn btn-secondary" style={{ borderRadius: '9999px', padding: '0.5rem 1.1rem' }} onClick={fetchDashboardData}>
                   <SlidersHorizontal size={16} /> Sync Data
                 </button>
-                <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setActiveTab('work-orders')}>
-                  <Plus size={18} /> Add new Work Order
-                </button>
+                {user.role === 'ADMIN' ? (
+                  <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setActiveTab('work-orders')}>
+                    <Plus size={18} /> Add new Work Order
+                  </button>
+                ) : user.role === 'OPERATIONS' ? (
+                  <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setActiveTab('transfers')}>
+                    <Plus size={18} /> Request Transfer
+                  </button>
+                ) : (
+                  <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setActiveTab('orders')}>
+                    <Plus size={18} /> New Sales Order
+                  </button>
+                )}
               </div>
             </div>
 
@@ -387,7 +407,6 @@ export const App: React.FC = () => {
               gap: '1.25rem',
               marginBottom: '1.75rem'
             }}>
-              {/* Metric Card 1 */}
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Total Physical Stock</span>
@@ -403,7 +422,6 @@ export const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* Metric Card 2 */}
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Available Inventory</span>
@@ -419,7 +437,6 @@ export const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* Metric Card 3 */}
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Material Shortage</span>
@@ -435,7 +452,6 @@ export const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* Metric Card 4 */}
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0f172a' }}>Reserved Stock</span>
@@ -459,7 +475,6 @@ export const App: React.FC = () => {
               gap: '1.5rem',
               marginBottom: '1.75rem'
             }}>
-              {/* Operations Flow Bar Chart Card */}
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                   <div>
@@ -480,7 +495,6 @@ export const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Styled Bar Chart Graphic */}
                 <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '180px', padding: '1rem 0', borderBottom: '1px solid #f1f5f9' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
                     <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px' }}>
@@ -511,14 +525,12 @@ export const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* Category Distribution Donut Widget */}
               <div className="card" style={{ marginBottom: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Stock Distribution</h3>
                   <ArrowUpRight size={18} color="#94a3b8" />
                 </div>
 
-                {/* Donut Graphic */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', margin: '1rem 0' }}>
                   <div style={{ position: 'relative', width: '110px', height: '110px' }}>
                     <svg width="110" height="110" viewBox="0 0 36 36">
@@ -547,15 +559,12 @@ export const App: React.FC = () => {
               gridTemplateColumns: '2fr 1fr',
               gap: '1.5rem'
             }}>
-              {/* Recent Transactions / Activity Card */}
               <div className="card" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                   <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Recent ERP Operations</h3>
-                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.85rem', color: '#7c3aed', fontWeight: 700, cursor: 'pointer' }} onClick={() => setActiveTab('work-orders')}>
-                      View all Work Orders ›
-                    </span>
-                  </div>
+                  <span style={{ fontSize: '0.85rem', color: '#7c3aed', fontWeight: 700, cursor: 'pointer' }} onClick={() => setActiveTab('work-orders')}>
+                    View Work Orders ›
+                  </span>
                 </div>
 
                 <div className="table-container">
@@ -642,9 +651,16 @@ export const App: React.FC = () => {
           </div>
         )}
 
+        {/* Tab 2: Inventory */}
         {activeTab === 'inventory' && <Inventory />}
+
+        {/* Tab 3: Work Orders */}
         {activeTab === 'work-orders' && <WorkOrders />}
+
+        {/* Tab 4: Stock Transfers */}
         {activeTab === 'transfers' && <InternalTransfers />}
+
+        {/* Tab 5: Customer Orders */}
         {activeTab === 'orders' && <CustomerOrders />}
       </main>
     </div>
