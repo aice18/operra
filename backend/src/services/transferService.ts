@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../config/prisma';
 import { AppError } from '../middleware/errorHandler';
-
-const prisma = new PrismaClient();
 
 export class TransferService {
   static async createTransfer(data: {
