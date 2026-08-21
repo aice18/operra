@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: operra-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm run render-build
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        value: super-secret-jwt-key-for-operations-erp-2026
+      - key: DATABASE_URL
+        value: postgresql://postgres:operraayush@db.teooyzzaacnbhftgtakc.supabase.co:5432/postgres
