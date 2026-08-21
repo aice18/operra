@@ -72,6 +72,14 @@ async function main() {
     data: { name: 'Raw Hardware & Steel' },
   });
 
+  const catPackaging = await prisma.category.create({
+    data: { name: 'Packaging & Enclosures' },
+  });
+
+  const catSensors = await prisma.category.create({
+    data: { name: 'Sensors & Automation' },
+  });
+
   // Create Items
   const itemCpu = await prisma.item.create({
     data: {
@@ -97,6 +105,22 @@ async function main() {
     },
   });
 
+  const itemCasing = await prisma.item.create({
+    data: {
+      sku: 'SKU-PKG-004',
+      name: 'Aluminum CNC Enclosure',
+      categoryId: catPackaging.id,
+    },
+  });
+
+  const itemSensor = await prisma.item.create({
+    data: {
+      sku: 'SKU-SNR-005',
+      name: 'LiDAR Distance Sensor Array',
+      categoryId: catSensors.id,
+    },
+  });
+
   // Create Initial Inventories
   // Location MAIN
   await prisma.inventory.create({
@@ -104,8 +128,8 @@ async function main() {
       locationId: locMain.id,
       itemId: itemCpu.id,
       batchNumber: 'BATCH-2026-A1',
-      physicalQuantity: 100,
-      reservedQuantity: 30, // Available = 70
+      physicalQuantity: 120,
+      reservedQuantity: 30, // Available = 90
     },
   });
 
@@ -119,14 +143,24 @@ async function main() {
     },
   });
 
+  await prisma.inventory.create({
+    data: {
+      locationId: locMain.id,
+      itemId: itemCasing.id,
+      batchNumber: 'BATCH-2026-C1',
+      physicalQuantity: 200,
+      reservedQuantity: 40, // Available = 160
+    },
+  });
+
   // Location NORTH
   await prisma.inventory.create({
     data: {
       locationId: locNorth.id,
       itemId: itemCpu.id,
       batchNumber: 'BATCH-2026-N1',
-      physicalQuantity: 60,
-      reservedQuantity: 0, // Available = 60
+      physicalQuantity: 80,
+      reservedQuantity: 10, // Available = 70
     },
   });
 
@@ -140,14 +174,121 @@ async function main() {
     },
   });
 
-  // Create Sample Work Order
+  await prisma.inventory.create({
+    data: {
+      locationId: locNorth.id,
+      itemId: itemSensor.id,
+      batchNumber: 'BATCH-2026-N3',
+      physicalQuantity: 90,
+      reservedQuantity: 15, // Available = 75
+    },
+  });
+
+  // Location SOUTH
+  await prisma.inventory.create({
+    data: {
+      locationId: locSouth.id,
+      itemId: itemCasing.id,
+      batchNumber: 'BATCH-2026-S2',
+      physicalQuantity: 75,
+      reservedQuantity: 0, // Available = 75
+    },
+  });
+
+  await prisma.inventory.create({
+    data: {
+      locationId: locSouth.id,
+      itemId: itemSensor.id,
+      batchNumber: 'BATCH-2026-S3',
+      physicalQuantity: 110,
+      reservedQuantity: 10, // Available = 100
+    },
+  });
+
+  // Create Work Orders
   await prisma.workOrder.create({
     data: {
       locationId: locMain.id,
       itemId: itemCpu.id,
-      requiredQuantity: 100, // Stock at MAIN is 70 available -> Shortage 30
+      requiredQuantity: 150, // Stock at MAIN is 90 available -> Shortage 60
+      assignedUserId: opsUser.id,
+      status: 'IN_PROGRESS',
+    },
+  });
+
+  await prisma.workOrder.create({
+    data: {
+      locationId: locNorth.id,
+      itemId: itemSensor.id,
+      requiredQuantity: 50, // Available at NORTH is 75 -> Shortage 0
       assignedUserId: opsUser.id,
       status: 'ASSIGNED',
+    },
+  });
+
+  await prisma.workOrder.create({
+    data: {
+      locationId: locSouth.id,
+      itemId: itemCasing.id,
+      requiredQuantity: 100, // Available at SOUTH is 75 -> Shortage 25
+      assignedUserId: admin.id,
+      status: 'ASSIGNED',
+    },
+  });
+
+  // Create Sample Internal Transfers
+  const transfer1 = await prisma.internalTransfer.create({
+    data: {
+      sourceLocationId: locNorth.id,
+      destinationLocationId: locMain.id,
+      itemId: itemCpu.id,
+      quantity: 40,
+      status: 'DISPATCHED',
+    },
+  });
+
+  const transfer2 = await prisma.internalTransfer.create({
+    data: {
+      sourceLocationId: locMain.id,
+      destinationLocationId: locSouth.id,
+      itemId: itemCasing.id,
+      quantity: 25,
+      status: 'REQUESTED',
+    },
+  });
+
+  // Create Sample Customer Orders
+  const order1 = await prisma.customerOrder.create({
+    data: {
+      orderNumber: 'ORD-2026-1001',
+      createdById: salesUser.id,
+      status: 'RESERVED',
+    },
+  });
+
+  await prisma.orderItem.create({
+    data: {
+      customerOrderId: order1.id,
+      itemId: itemCpu.id,
+      locationId: locMain.id,
+      quantity: 30,
+    },
+  });
+
+  const order2 = await prisma.customerOrder.create({
+    data: {
+      orderNumber: 'ORD-2026-1002',
+      createdById: salesUser.id,
+      status: 'RESERVED',
+    },
+  });
+
+  await prisma.orderItem.create({
+    data: {
+      customerOrderId: order2.id,
+      itemId: itemDisplay.id,
+      locationId: locNorth.id,
+      quantity: 20,
     },
   });
 

@@ -3,7 +3,11 @@ import { useAuth } from '../context/AuthContext';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 import logoImg from '../assets/logo.png';
 
-export const Login: React.FC = () => {
+interface LoginProps {
+  onBackToHome?: () => void;
+}
+
+export const Login: React.FC<LoginProps> = ({ onBackToHome }) => {
   const { login } = useAuth();
   const [email, setEmail] = useState('admin@erp.com');
   const [password, setPassword] = useState('password123');
@@ -32,6 +36,15 @@ export const Login: React.FC = () => {
     <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0f172a', padding: '1rem' }}>
       <div className="card" style={{ width: '100%', maxWidth: '440px' }}>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          {onBackToHome && (
+            <button
+              onClick={onBackToHome}
+              className="btn btn-secondary"
+              style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', marginBottom: '1rem' }}
+            >
+              ← Back to Product Page
+            </button>
+          )}
           <div style={{ display: 'inline-flex', padding: '0.5rem', borderRadius: '1.25rem', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', marginBottom: '1rem' }}>
             <img src={logoImg} alt="Operra Logo" style={{ width: '64px', height: '64px', borderRadius: '0.85rem', objectFit: 'cover' }} />
           </div>
