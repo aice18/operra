@@ -99,25 +99,25 @@ export const InternalTransfers: React.FC = () => {
           <table>
             <thead>
               <tr>
-                <th>Transfer ID</th>
-                <th>Source Location</th>
-                <th>Destination Location</th>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th style={{ minWidth: '130px' }}>Transfer ID</th>
+                <th style={{ minWidth: '200px' }}>Source Location</th>
+                <th style={{ minWidth: '200px' }}>Destination Location</th>
+                <th style={{ minWidth: '220px' }}>Item</th>
+                <th style={{ textAlign: 'center', minWidth: '100px' }}>Quantity</th>
+                <th style={{ minWidth: '130px' }}>Status</th>
+                <th style={{ minWidth: '150px' }}>Action</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     Loading transfer requests...
                   </td>
                 </tr>
               ) : transfers.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     No internal transfers recorded.
                   </td>
                 </tr>
@@ -125,16 +125,23 @@ export const InternalTransfers: React.FC = () => {
                 transfers.map((t) => (
                   <tr key={t.id}>
                     <td>
-                      <code>{t.id.substring(0, 8)}...</code>
+                      <code style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#c084fc' }}>{t.id.substring(0, 8)}...</code>
                     </td>
                     <td>
-                      <strong>{t.sourceLocation.name}</strong>
+                      <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{t.sourceLocation.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{t.sourceLocation.code}</div>
                     </td>
                     <td>
-                      <strong>{t.destinationLocation.name}</strong>
+                      <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{t.destinationLocation.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{t.destinationLocation.code}</div>
                     </td>
-                    <td>{t.item.name}</td>
-                    <td style={{ fontWeight: 600 }}>{t.quantity}</td>
+                    <td>
+                      <div style={{ fontWeight: 500, color: '#f1f5f9' }}>{t.item.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#38bdf8' }}>{t.item.sku}</div>
+                    </td>
+                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                      {t.quantity}
+                    </td>
                     <td>
                       <span className={`badge badge-${t.status.toLowerCase()}`}>{t.status}</span>
                     </td>

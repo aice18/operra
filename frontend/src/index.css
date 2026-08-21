@@ -239,9 +239,10 @@ body {
 .table-container {
   width: 100%;
   overflow-x: auto;
-  border-radius: 0.6rem;
-  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(139, 92, 246, 0.25);
   background: var(--bg-card);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 table {
@@ -251,42 +252,82 @@ table {
 }
 
 th {
-  background-color: rgba(14, 7, 36, 0.9);
-  padding: 0.85rem 1rem;
-  font-size: 0.85rem;
-  color: var(--accent-secondary);
+  background-color: rgba(14, 7, 36, 0.95);
+  padding: 1.1rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border-color);
+  letter-spacing: 0.75px;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.25);
+  white-space: nowrap;
 }
 
 td {
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.12);
   font-size: 0.9rem;
-  color: #e2e8f0;
+  color: #f1f5f9;
+  vertical-align: middle;
+  line-height: 1.5;
 }
 
 tr:hover {
-  background-color: rgba(139, 92, 246, 0.06);
+  background-color: rgba(139, 92, 246, 0.08);
 }
 
 .badge {
-  padding: 0.3rem 0.7rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 9999px;
   font-size: 0.75rem;
-  font-weight: 600;
-  display: inline-block;
-  letter-spacing: 0.3px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .badge-admin { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
 .badge-ops { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.4); }
 .badge-sales { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
 
+.badge-status-assigned { background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); }
+.badge-status-in-progress { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+.badge-status-completed { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+
 .badge-requested { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
 .badge-dispatched { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
 .badge-received { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+.chip-shortage {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 0.5rem;
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  font-weight: 700;
+  font-size: 0.825rem;
+  white-space: nowrap;
+}
+
+.chip-instock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 0.5rem;
+  background: rgba(16, 185, 129, 0.12);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  font-weight: 700;
+  font-size: 0.825rem;
+  white-space: nowrap;
+}
 
 .form-group {
   display: flex;

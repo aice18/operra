@@ -81,24 +81,24 @@ export const CustomerOrders: React.FC = () => {
           <table>
             <thead>
               <tr>
-                <th>Order Number</th>
-                <th>Created By</th>
-                <th>Reserved Items</th>
-                <th>Total Reserved Qty</th>
-                <th>Status</th>
-                <th>Created Date</th>
+                <th style={{ minWidth: '150px' }}>Order Number</th>
+                <th style={{ minWidth: '220px' }}>Created By</th>
+                <th style={{ minWidth: '240px' }}>Reserved Items</th>
+                <th style={{ textAlign: 'center', minWidth: '130px' }}>Total Reserved Qty</th>
+                <th style={{ minWidth: '140px' }}>Status</th>
+                <th style={{ minWidth: '160px' }}>Created Date</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     Loading customer orders...
                   </td>
                 </tr>
               ) : orders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     No customer orders created yet.
                   </td>
                 </tr>
@@ -106,27 +106,29 @@ export const CustomerOrders: React.FC = () => {
                 orders.map((ord) => (
                   <tr key={ord.id}>
                     <td>
-                      <code>{ord.orderNumber}</code>
+                      <code style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#38bdf8' }}>{ord.orderNumber}</code>
                     </td>
                     <td>
-                      <strong>{ord.createdBy.name}</strong> ({ord.createdBy.email})
+                      <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{ord.createdBy.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{ord.createdBy.email}</div>
                     </td>
                     <td>
                       {ord.orderItems.map((oi: any) => (
-                        <div key={oi.id}>
-                          {oi.item.name} ({oi.quantity} units)
+                        <div key={oi.id} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
+                          <span style={{ fontWeight: 500, color: '#f1f5f9' }}>{oi.item.name}</span>
+                          <span className="badge badge-ops" style={{ padding: '0.15rem 0.45rem', fontSize: '0.7rem' }}>{oi.quantity} units</span>
                         </div>
                       ))}
                     </td>
-                    <td style={{ fontWeight: 600 }}>
+                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '1rem', color: '#ffffff' }}>
                       {ord.orderItems.reduce((acc: number, item: any) => acc + item.quantity, 0)}
                     </td>
                     <td>
-                      <span className="badge badge-ops" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                      <span className="badge badge-received" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                         <ShieldCheck size={14} /> {ord.status}
                       </span>
                     </td>
-                    <td style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                    <td style={{ color: '#94a3b8', fontSize: '0.825rem' }}>
                       {new Date(ord.createdAt).toLocaleString()}
                     </td>
                   </tr>

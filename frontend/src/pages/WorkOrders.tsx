@@ -88,66 +88,82 @@ export const WorkOrders: React.FC = () => {
           <table>
             <thead>
               <tr>
-                <th>Location</th>
-                <th>Item</th>
-                <th>Required Qty</th>
-                <th>Available Stock</th>
-                <th>Calculated Shortage</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th style={{ minWidth: '180px' }}>Location</th>
+                <th style={{ minWidth: '220px' }}>Item</th>
+                <th style={{ textAlign: 'center', minWidth: '110px' }}>Required Qty</th>
+                <th style={{ textAlign: 'center', minWidth: '120px' }}>Available Stock</th>
+                <th style={{ minWidth: '190px' }}>Calculated Shortage</th>
+                <th style={{ minWidth: '140px' }}>Status</th>
+                <th style={{ minWidth: '150px' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     Loading work orders...
                   </td>
                 </tr>
               ) : workOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     No work orders created yet.
                   </td>
                 </tr>
               ) : (
-                workOrders.map((wo) => (
-                  <tr key={wo.id}>
-                    <td>
-                      <strong>{wo.location.name}</strong>
-                    </td>
-                    <td>{wo.item.name}</td>
-                    <td style={{ fontWeight: 600 }}>{wo.requiredQuantity}</td>
-                    <td style={{ fontWeight: 600 }}>{wo.availableAtLocation}</td>
-                    <td>
-                      {wo.shortageQuantity > 0 ? (
-                        <span style={{ color: 'var(--accent-danger)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                          <AlertTriangle size={16} /> Shortage = {wo.shortageQuantity}
-                        </span>
-                      ) : (
-                        <span style={{ color: 'var(--accent-success)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                          <CheckCircle2 size={16} /> In Stock
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      <span className="badge badge-ops">{wo.status}</span>
-                    </td>
-                    <td>
-                      {canUpdateStatus && (
-                        <select
-                          value={wo.status}
-                          onChange={(e) => updateStatus(wo.id, e.target.value)}
-                          style={{ padding: '0.3rem 0.5rem', fontSize: '0.8rem' }}
-                        >
-                          <option value="ASSIGNED">ASSIGNED</option>
-                          <option value="IN_PROGRESS">IN_PROGRESS</option>
-                          <option value="COMPLETED">COMPLETED</option>
-                        </select>
-                      )}
-                    </td>
-                  </tr>
-                ))
+                workOrders.map((wo) => {
+                  const statusClass =
+                    wo.status === 'ASSIGNED'
+                      ? 'badge-status-assigned'
+                      : wo.status === 'IN_PROGRESS'
+                      ? 'badge-status-in-progress'
+                      : 'badge-status-completed';
+
+                  return (
+                    <tr key={wo.id}>
+                      <td>
+                        <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{wo.location.name}</div>
+                        <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{wo.location.code}</div>
+                      </td>
+                      <td>
+                        <div style={{ fontWeight: 500, color: '#f1f5f9' }}>{wo.item.name}</div>
+                        <div style={{ fontSize: '0.75rem', color: '#a855f7' }}>{wo.item.sku}</div>
+                      </td>
+                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                        {wo.requiredQuantity}
+                      </td>
+                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#38bdf8' }}>
+                        {wo.availableAtLocation}
+                      </td>
+                      <td>
+                        {wo.shortageQuantity > 0 ? (
+                          <span className="chip-shortage">
+                            <AlertTriangle size={15} /> Shortage = {wo.shortageQuantity}
+                          </span>
+                        ) : (
+                          <span className="chip-instock">
+                            <CheckCircle2 size={15} /> In Stock
+                          </span>
+                        )}
+                      </td>
+                      <td>
+                        <span className={`badge ${statusClass}`}>{wo.status}</span>
+                      </td>
+                      <td>
+                        {canUpdateStatus && (
+                          <select
+                            value={wo.status}
+                            onChange={(e) => updateStatus(wo.id, e.target.value)}
+                          >
+                            <option value="ASSIGNED">ASSIGNED</option>
+                            <option value="IN_PROGRESS">IN_PROGRESS</option>
+                            <option value="COMPLETED">COMPLETED</option>
+                          </select>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

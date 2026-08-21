@@ -85,25 +85,25 @@ export const Inventory: React.FC = () => {
           <table>
             <thead>
               <tr>
-                <th>Location</th>
-                <th>Item & Category</th>
-                <th>SKU</th>
-                <th>Batch Number</th>
-                <th>Physical Qty</th>
-                <th>Reserved Qty</th>
-                <th>Available Qty</th>
+                <th style={{ minWidth: '180px' }}>Location</th>
+                <th style={{ minWidth: '220px' }}>Item & Category</th>
+                <th style={{ minWidth: '140px' }}>SKU</th>
+                <th style={{ minWidth: '150px' }}>Batch Number</th>
+                <th style={{ textAlign: 'center', minWidth: '110px' }}>Physical Qty</th>
+                <th style={{ textAlign: 'center', minWidth: '110px' }}>Reserved Qty</th>
+                <th style={{ textAlign: 'center', minWidth: '110px' }}>Available Qty</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     Loading stock records...
                   </td>
                 </tr>
               ) : inventories.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: '#94a3b8' }}>
                     No inventory records found.
                   </td>
                 </tr>
@@ -111,26 +111,26 @@ export const Inventory: React.FC = () => {
                 inventories.map((inv) => (
                   <tr key={inv.id}>
                     <td>
-                      <strong>{inv.location.name}</strong>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                        {inv.location.code}
-                      </div>
+                      <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{inv.location.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{inv.location.code}</div>
                     </td>
                     <td>
-                      <div>{inv.item.name}</div>
+                      <div style={{ fontWeight: 500, color: '#f1f5f9', marginBottom: '0.25rem' }}>{inv.item.name}</div>
                       <span className="badge badge-ops">{inv.item.category.name}</span>
                     </td>
                     <td>
-                      <code>{inv.item.sku}</code>
+                      <code style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#c084fc' }}>{inv.item.sku}</code>
                     </td>
                     <td>
-                      <code>{inv.batchNumber}</code>
+                      <code style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#38bdf8' }}>{inv.batchNumber}</code>
                     </td>
-                    <td style={{ fontWeight: 600 }}>{inv.physicalQuantity}</td>
-                    <td style={{ color: 'var(--accent-warning)', fontWeight: 600 }}>
+                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                      {inv.physicalQuantity}
+                    </td>
+                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#fbbf24' }}>
                       {inv.reservedQuantity}
                     </td>
-                    <td style={{ color: inv.availableQuantity > 0 ? 'var(--accent-success)' : 'var(--accent-danger)', fontWeight: 700 }}>
+                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '1.05rem', color: inv.availableQuantity > 0 ? '#34d399' : '#f87171' }}>
                       {inv.availableQuantity}
                     </td>
                   </tr>
