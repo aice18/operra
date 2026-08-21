@@ -23,12 +23,16 @@ interface LandingPageProps {
 export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
   return (
     <div style={{
-      minHeight: '100vh',
+      position: 'fixed',
+      inset: 0,
+      width: '100vw',
+      height: '100vh',
       backgroundColor: '#090417',
       color: '#f8fafc',
       fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-      position: 'relative',
-      overflowX: 'hidden'
+      overflowY: 'auto',
+      overflowX: 'hidden',
+      zIndex: 9999
     }}>
       {/* Dynamic Background Ambient Glows */}
       <div style={{

@@ -93,16 +93,20 @@ export const Login: React.FC<LoginProps> = ({ onBackToHome }) => {
 
   return (
     <div style={{
-      minHeight: '100vh',
+      position: 'fixed',
+      inset: 0,
+      width: '100vw',
+      height: '100vh',
       backgroundColor: '#090417',
       color: '#f8fafc',
       fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-      position: 'relative',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '2rem 1rem',
-      overflowX: 'hidden'
+      overflowY: 'auto',
+      overflowX: 'hidden',
+      zIndex: 9999
     }}>
       {/* Background Ambient Glows */}
       <div style={{
