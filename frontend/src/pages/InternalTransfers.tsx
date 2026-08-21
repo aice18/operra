@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ArrowLeftRight, Plus, Truck, CheckCircle2 } from 'lucide-react';
+import { ArrowLeftRight, Plus, Truck, CheckCircle2, RefreshCw, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const InternalTransfers: React.FC = () => {
@@ -78,23 +78,103 @@ export const InternalTransfers: React.FC = () => {
 
   const canManage = user?.role === 'ADMIN' || user?.role === 'OPERATIONS';
 
+  // Calculated Summary Metrics
+  const totalTransfers = transfers.length;
+  const dispatchedTransfers = transfers.filter((t) => t.status === 'DISPATCHED').length;
+  const completedTransfers = transfers.filter((t) => t.status === 'RECEIVED').length;
+
   return (
     <div>
-      <div className="header-title">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <ArrowLeftRight className="text-primary" size={28} />
-          <span>Internal Stock Transfers</span>
+      {/* Top Action & Filter Bar */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '1.75rem'
+      }}>
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 1rem',
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: '9999px',
+          fontSize: '0.85rem',
+          fontWeight: 600,
+          color: '#0f172a'
+        }}>
+          <ArrowLeftRight size={16} color="#7c3aed" /> Inter-Warehouse Stock Transfer Pipeline
         </div>
-        {canManage && (
-          <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-            <Plus size={16} /> Request Transfer
+
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <button className="btn btn-secondary" style={{ borderRadius: '9999px', padding: '0.5rem 1.1rem' }} onClick={fetchTransfers}>
+            <RefreshCw size={16} className={loading ? 'spin' : ''} /> Sync Transfers
           </button>
-        )}
+          {canManage && (
+            <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setShowModal(true)}>
+              <Plus size={18} /> Request Transfer
+            </button>
+          )}
+        </div>
       </div>
 
       {error && <div className="alert-error">{error}</div>}
 
-      <div className="card">
+      {/* Top 3 KPI Summary Cards */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '1.25rem',
+        marginBottom: '1.75rem'
+      }}>
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Total Transfer Requests</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>
+            {totalTransfers} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>Transfers</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <TrendingUp size={14} /> Total Inter-Location Movements
+          </div>
+        </div>
+
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>En Route (Dispatched)</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#7c3aed', marginBottom: '0.5rem' }}>
+            {dispatchedTransfers} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>In Transit</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: 'rgba(124, 58, 237, 0.1)', color: '#7c3aed', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <Truck size={14} /> Source Inventory Reduced
+          </div>
+        </div>
+
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Completed Receipts</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#059669', marginBottom: '0.5rem' }}>
+            {completedTransfers} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>Received</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <CheckCircle2 size={14} /> Destination Stock Increased
+          </div>
+        </div>
+      </div>
+
+      {/* Main Table Card Container */}
+      <div className="card" style={{ marginBottom: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Internal Stock Transfer Log</h3>
+          <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{transfers.length} Active Records</span>
+        </div>
+
         <div className="table-container">
           <table>
             <thead>
@@ -125,21 +205,21 @@ export const InternalTransfers: React.FC = () => {
                 transfers.map((t) => (
                   <tr key={t.id}>
                     <td>
-                      <code style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#c084fc' }}>{t.id.substring(0, 8)}...</code>
+                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#7c3aed', fontWeight: 600 }}>{t.id.substring(0, 8)}...</code>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{t.sourceLocation.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{t.sourceLocation.code}</div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{t.sourceLocation.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{t.sourceLocation.code}</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{t.destinationLocation.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{t.destinationLocation.code}</div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{t.destinationLocation.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{t.destinationLocation.code}</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 500, color: '#f1f5f9' }}>{t.item.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#38bdf8' }}>{t.item.sku}</div>
+                      <div style={{ fontWeight: 600, color: '#0f172a' }}>{t.item.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#0284c7' }}>{t.item.sku}</div>
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#0f172a' }}>
                       {t.quantity}
                     </td>
                     <td>
@@ -167,8 +247,8 @@ export const InternalTransfers: React.FC = () => {
                             </button>
                           )}
                           {t.status === 'RECEIVED' && (
-                            <span style={{ fontSize: '0.8rem', color: 'var(--accent-success)', fontWeight: 600 }}>
-                              Completed
+                            <span style={{ fontSize: '0.8rem', color: '#059669', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                              <CheckCircle2 size={14} /> Completed
                             </span>
                           )}
                         </div>
@@ -185,7 +265,7 @@ export const InternalTransfers: React.FC = () => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3 style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>Create Internal Stock Transfer</h3>
+            <h3 style={{ marginBottom: '1.25rem', fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>Create Internal Stock Transfer</h3>
             <form onSubmit={handleCreateTransfer}>
               <div className="form-group">
                 <label>Source Location (Stock will reduce on Dispatch)</label>
@@ -237,8 +317,7 @@ export const InternalTransfers: React.FC = () => {
               <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
                 <button
                   type="button"
-                  className="btn"
-                  style={{ background: 'var(--bg-input)' }}
+                  className="btn btn-secondary"
                   onClick={() => setShowModal(false)}
                 >
                   Cancel

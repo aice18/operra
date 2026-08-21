@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ShoppingBag, Plus, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, Plus, ShieldCheck, RefreshCw, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const CustomerOrders: React.FC = () => {
@@ -60,23 +60,104 @@ export const CustomerOrders: React.FC = () => {
 
   const canCreate = user?.role === 'ADMIN' || user?.role === 'SALES';
 
+  // Calculated Summary Metrics
+  const totalOrders = orders.length;
+  const totalReservedUnits = orders.reduce((sum, ord) => {
+    return sum + ord.orderItems.reduce((acc: number, item: any) => acc + (item.quantity || 0), 0);
+  }, 0);
+
   return (
     <div>
-      <div className="header-title">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <ShoppingBag className="text-primary" size={28} />
-          <span>Customer Orders & Stock Reservation</span>
+      {/* Top Action & Filter Bar */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '1.75rem'
+      }}>
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 1rem',
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: '9999px',
+          fontSize: '0.85rem',
+          fontWeight: 600,
+          color: '#0f172a'
+        }}>
+          <ShoppingBag size={16} color="#7c3aed" /> Customer Sales Orders & Stock Reservations
         </div>
-        {canCreate && (
-          <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-            <Plus size={16} /> New Order & Reserve Stock
+
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <button className="btn btn-secondary" style={{ borderRadius: '9999px', padding: '0.5rem 1.1rem' }} onClick={fetchOrders}>
+            <RefreshCw size={16} className={loading ? 'spin' : ''} /> Refresh Orders
           </button>
-        )}
+          {canCreate && (
+            <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setShowModal(true)}>
+              <Plus size={18} /> New Sales Order
+            </button>
+          )}
+        </div>
       </div>
 
       {error && <div className="alert-error">{error}</div>}
 
-      <div className="card">
+      {/* Top 3 KPI Summary Cards */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '1.25rem',
+        marginBottom: '1.75rem'
+      }}>
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Total Customer Orders</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>
+            {totalOrders} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>Orders</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <TrendingUp size={14} /> Recorded Sales Bookings
+          </div>
+        </div>
+
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Total Reserved Stock</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#d97706', marginBottom: '0.5rem' }}>
+            {totalReservedUnits.toLocaleString()} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>Units</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#fffbeb', color: '#d97706', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <ShieldCheck size={14} /> Locked in Warehouse DB
+          </div>
+        </div>
+
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Reservation Security</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#059669', marginBottom: '0.5rem' }}>
+            100% <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>ACID Locked</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <ShieldCheck size={14} /> Over-reservation Blocked
+          </div>
+        </div>
+      </div>
+
+      {/* Main Table Card Container */}
+      <div className="card" style={{ marginBottom: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Customer Order Reservation Log</h3>
+          <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{orders.length} Active Records</span>
+        </div>
+
         <div className="table-container">
           <table>
             <thead>
@@ -106,21 +187,21 @@ export const CustomerOrders: React.FC = () => {
                 orders.map((ord) => (
                   <tr key={ord.id}>
                     <td>
-                      <code style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#38bdf8' }}>{ord.orderNumber}</code>
+                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#0284c7', fontWeight: 600 }}>{ord.orderNumber}</code>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{ord.createdBy.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{ord.createdBy.email}</div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{ord.createdBy.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{ord.createdBy.email}</div>
                     </td>
                     <td>
                       {ord.orderItems.map((oi: any) => (
                         <div key={oi.id} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
-                          <span style={{ fontWeight: 500, color: '#f1f5f9' }}>{oi.item.name}</span>
+                          <span style={{ fontWeight: 500, color: '#0f172a' }}>{oi.item.name}</span>
                           <span className="badge badge-ops" style={{ padding: '0.15rem 0.45rem', fontSize: '0.7rem' }}>{oi.quantity} units</span>
                         </div>
                       ))}
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '1rem', color: '#ffffff' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '1rem', color: '#0f172a' }}>
                       {ord.orderItems.reduce((acc: number, item: any) => acc + item.quantity, 0)}
                     </td>
                     <td>
@@ -128,7 +209,7 @@ export const CustomerOrders: React.FC = () => {
                         <ShieldCheck size={14} /> {ord.status}
                       </span>
                     </td>
-                    <td style={{ color: '#94a3b8', fontSize: '0.825rem' }}>
+                    <td style={{ color: '#64748b', fontSize: '0.825rem' }}>
                       {new Date(ord.createdAt).toLocaleString()}
                     </td>
                   </tr>
@@ -142,7 +223,7 @@ export const CustomerOrders: React.FC = () => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3 style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>Create Order & Reserve Stock</h3>
+            <h3 style={{ marginBottom: '1.25rem', fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>Create Order & Reserve Stock</h3>
             <form onSubmit={handleCreateOrder}>
               <div className="form-group">
                 <label>Target Stock Location</label>
@@ -182,8 +263,7 @@ export const CustomerOrders: React.FC = () => {
               <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
                 <button
                   type="button"
-                  className="btn"
-                  style={{ background: 'var(--bg-input)' }}
+                  className="btn btn-secondary"
                   onClick={() => setShowModal(false)}
                 >
                   Cancel

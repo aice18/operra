@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Package, Plus, RefreshCw } from 'lucide-react';
+import { Package, Plus, RefreshCw, Layers, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Inventory: React.FC = () => {
@@ -59,20 +59,42 @@ export const Inventory: React.FC = () => {
 
   const canManage = user?.role === 'ADMIN' || user?.role === 'OPERATIONS';
 
+  // Calculated Summary Metrics
+  const totalPhysical = inventories.reduce((sum, item) => sum + (item.physicalQuantity || 0), 0);
+  const totalReserved = inventories.reduce((sum, item) => sum + (item.reservedQuantity || 0), 0);
+  const totalAvailable = inventories.reduce((sum, item) => sum + (item.availableQuantity || 0), 0);
+
   return (
     <div>
-      <div className="header-title">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <Package className="text-primary" size={28} />
-          <span>Inventory Management</span>
+      {/* Action & Filter Bar */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '1.75rem'
+      }}>
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 1rem',
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: '9999px',
+          fontSize: '0.85rem',
+          fontWeight: 600,
+          color: '#0f172a'
+        }}>
+          <Package size={16} color="#7c3aed" /> Multi-Warehouse Stock Records
         </div>
+
         <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button className="btn btn-primary" onClick={fetchInventory}>
-            <RefreshCw size={16} /> Refresh
+          <button className="btn btn-secondary" style={{ borderRadius: '9999px', padding: '0.5rem 1.1rem' }} onClick={fetchInventory}>
+            <RefreshCw size={16} className={loading ? 'spin' : ''} /> Sync Records
           </button>
           {canManage && (
-            <button className="btn btn-success" onClick={() => setShowModal(true)}>
-              <Plus size={16} /> Adjust Stock
+            <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setShowModal(true)}>
+              <Plus size={18} /> Adjust Physical Stock
             </button>
           )}
         </div>
@@ -80,7 +102,60 @@ export const Inventory: React.FC = () => {
 
       {error && <div className="alert-error">{error}</div>}
 
-      <div className="card">
+      {/* Top 3 KPI Summary Cards */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '1.25rem',
+        marginBottom: '1.75rem'
+      }}>
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Total Physical Quantity</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>
+            {totalPhysical.toLocaleString()} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>Units</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <TrendingUp size={14} /> Across {locations.length} Locations
+          </div>
+        </div>
+
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Reserved Stock</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#d97706', marginBottom: '0.5rem' }}>
+            {totalReserved.toLocaleString()} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>Reserved</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#fffbeb', color: '#d97706', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <Layers size={14} /> Locked for Sales Orders
+          </div>
+        </div>
+
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Available Quantity</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#059669', marginBottom: '0.5rem' }}>
+            {totalAvailable.toLocaleString()} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>Available</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <TrendingUp size={14} /> Physical - Reserved
+          </div>
+        </div>
+      </div>
+
+      {/* Main Table Card Container */}
+      <div className="card" style={{ marginBottom: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Warehouse Inventory Ledger</h3>
+          <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{inventories.length} Batch Records</span>
+        </div>
+
         <div className="table-container">
           <table>
             <thead>
@@ -111,26 +186,26 @@ export const Inventory: React.FC = () => {
                 inventories.map((inv) => (
                   <tr key={inv.id}>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{inv.location.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{inv.location.code}</div>
+                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{inv.location.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{inv.location.code}</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 500, color: '#f1f5f9', marginBottom: '0.25rem' }}>{inv.item.name}</div>
+                      <div style={{ fontWeight: 600, color: '#0f172a', marginBottom: '0.25rem' }}>{inv.item.name}</div>
                       <span className="badge badge-ops">{inv.item.category.name}</span>
                     </td>
                     <td>
-                      <code style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#c084fc' }}>{inv.item.sku}</code>
+                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#7c3aed', fontWeight: 600 }}>{inv.item.sku}</code>
                     </td>
                     <td>
-                      <code style={{ background: 'rgba(255,255,255,0.06)', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#38bdf8' }}>{inv.batchNumber}</code>
+                      <code style={{ background: '#f1f5f9', padding: '0.2rem 0.5rem', borderRadius: '0.35rem', color: '#0284c7', fontWeight: 600 }}>{inv.batchNumber}</code>
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#0f172a' }}>
                       {inv.physicalQuantity}
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#fbbf24' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#d97706' }}>
                       {inv.reservedQuantity}
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '1.05rem', color: inv.availableQuantity > 0 ? '#34d399' : '#f87171' }}>
+                    <td style={{ textAlign: 'center', fontWeight: 800, fontSize: '1.05rem', color: inv.availableQuantity > 0 ? '#059669' : '#dc2626' }}>
                       {inv.availableQuantity}
                     </td>
                   </tr>
@@ -144,7 +219,7 @@ export const Inventory: React.FC = () => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3 style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>Adjust Physical Stock</h3>
+            <h3 style={{ marginBottom: '1.25rem', fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>Adjust Physical Stock</h3>
             <form onSubmit={handleAdjustStock}>
               <div className="form-group">
                 <label>Location</label>
@@ -203,8 +278,7 @@ export const Inventory: React.FC = () => {
               <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
                 <button
                   type="button"
-                  className="btn"
-                  style={{ background: 'var(--bg-input)' }}
+                  className="btn btn-secondary"
                   onClick={() => setShowModal(false)}
                 >
                   Cancel

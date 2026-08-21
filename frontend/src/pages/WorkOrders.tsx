@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ClipboardList, Plus, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { ClipboardList, Plus, AlertTriangle, CheckCircle2, RefreshCw, ArrowUpRight, TrendingUp, TrendingDown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const WorkOrders: React.FC = () => {
@@ -67,23 +67,103 @@ export const WorkOrders: React.FC = () => {
   const isAdmin = user?.role === 'ADMIN';
   const canUpdateStatus = user?.role === 'ADMIN' || user?.role === 'OPERATIONS';
 
+  // Calculated Summary Metrics
+  const totalWorkOrders = workOrders.length;
+  const inProgressOrders = workOrders.filter((w) => w.status === 'IN_PROGRESS' || w.status === 'ASSIGNED').length;
+  const totalShortage = workOrders.reduce((sum, wo) => sum + (wo.shortageQuantity || 0), 0);
+
   return (
     <div>
-      <div className="header-title">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <ClipboardList className="text-primary" size={28} />
-          <span>Work Orders & Material Stock Check</span>
+      {/* Top Action & Filter Bar */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '1.75rem'
+      }}>
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 1rem',
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: '9999px',
+          fontSize: '0.85rem',
+          fontWeight: 600,
+          color: '#0f172a'
+        }}>
+          <ClipboardList size={16} color="#7c3aed" /> Production Work Orders & Material Stock Check
         </div>
-        {isAdmin && (
-          <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-            <Plus size={16} /> Create Work Order
+
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <button className="btn btn-secondary" style={{ borderRadius: '9999px', padding: '0.5rem 1.1rem' }} onClick={fetchWorkOrders}>
+            <RefreshCw size={16} className={loading ? 'spin' : ''} /> Refresh Orders
           </button>
-        )}
+          {isAdmin && (
+            <button className="btn btn-primary" style={{ borderRadius: '9999px', padding: '0.5rem 1.25rem' }} onClick={() => setShowModal(true)}>
+              <Plus size={18} /> Create Work Order
+            </button>
+          )}
+        </div>
       </div>
 
       {error && <div className="alert-error">{error}</div>}
 
-      <div className="card">
+      {/* Top 3 KPI Summary Cards */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '1.25rem',
+        marginBottom: '1.75rem'
+      }}>
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Total Work Orders</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>
+            {totalWorkOrders} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>Orders</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#059669', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <TrendingUp size={14} /> Registered Production Orders
+          </div>
+        </div>
+
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Active Orders</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#7c3aed', marginBottom: '0.5rem' }}>
+            {inProgressOrders} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>In Progress</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: 'rgba(124, 58, 237, 0.1)', color: '#7c3aed', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            <TrendingUp size={14} /> Assigned to Operations
+          </div>
+        </div>
+
+        <div className="card" style={{ marginBottom: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0f172a' }}>Total Calculated Shortage</span>
+            <ArrowUpRight size={16} color="#94a3b8" />
+          </div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: totalShortage > 0 ? '#dc2626' : '#059669', marginBottom: '0.5rem' }}>
+            {totalShortage.toLocaleString()} <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>Units</span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: totalShortage > 0 ? '#fef2f2' : '#ecfdf5', color: totalShortage > 0 ? '#dc2626' : '#059669', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700 }}>
+            {totalShortage > 0 ? <TrendingDown size={14} /> : <TrendingUp size={14} />} {totalShortage > 0 ? 'Requires internal transfer' : 'Full Material Available'}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Table Card Container */}
+      <div className="card" style={{ marginBottom: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0f172a' }}>Work Orders & Material Stock Matrix</h3>
+          <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{workOrders.length} Active Records</span>
+        </div>
+
         <div className="table-container">
           <table>
             <thead>
@@ -122,17 +202,17 @@ export const WorkOrders: React.FC = () => {
                   return (
                     <tr key={wo.id}>
                       <td>
-                        <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>{wo.location.name}</div>
-                        <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{wo.location.code}</div>
+                        <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.95rem' }}>{wo.location.name}</div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{wo.location.code}</div>
                       </td>
                       <td>
-                        <div style={{ fontWeight: 500, color: '#f1f5f9' }}>{wo.item.name}</div>
-                        <div style={{ fontSize: '0.75rem', color: '#a855f7' }}>{wo.item.sku}</div>
+                        <div style={{ fontWeight: 600, color: '#0f172a' }}>{wo.item.name}</div>
+                        <div style={{ fontSize: '0.75rem', color: '#7c3aed' }}>{wo.item.sku}</div>
                       </td>
-                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#0f172a' }}>
                         {wo.requiredQuantity}
                       </td>
-                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#38bdf8' }}>
+                      <td style={{ textAlign: 'center', fontWeight: 700, fontSize: '1rem', color: '#0284c7' }}>
                         {wo.availableAtLocation}
                       </td>
                       <td>
@@ -173,7 +253,7 @@ export const WorkOrders: React.FC = () => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3 style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>Create New Work Order</h3>
+            <h3 style={{ marginBottom: '1.25rem', fontSize: '1.25rem', fontWeight: 800, color: '#0f172a' }}>Create New Work Order</h3>
             <form onSubmit={handleCreateWorkOrder}>
               <div className="form-group">
                 <label>Location</label>
@@ -221,8 +301,7 @@ export const WorkOrders: React.FC = () => {
               <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
                 <button
                   type="button"
-                  className="btn"
-                  style={{ background: 'var(--bg-input)' }}
+                  className="btn btn-secondary"
                   onClick={() => setShowModal(false)}
                 >
                   Cancel
