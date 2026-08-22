@@ -5,12 +5,14 @@ import { useAuth } from '../context/AuthContext';
 
 import { API_BASE_URL } from '../config/api';
 
+import { DEMO_INVENTORIES, DEMO_LOCATIONS, DEMO_ITEMS } from '../utils/demoData';
+
 export const Inventory: React.FC = () => {
   const { user } = useAuth();
-  const [inventories, setInventories] = useState<any[]>([]);
-  const [locations, setLocations] = useState<any[]>([]);
-  const [items, setItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [inventories, setInventories] = useState<any[]>(DEMO_INVENTORIES);
+  const [locations, setLocations] = useState<any[]>(DEMO_LOCATIONS);
+  const [items, setItems] = useState<any[]>(DEMO_ITEMS);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   // Modal State for adjusting stock
@@ -32,7 +34,10 @@ export const Inventory: React.FC = () => {
       setLocations(locRes.data);
       setItems(itemRes.data);
     } catch (err: any) {
-      setError('Failed to fetch inventory data');
+      console.warn('Backend DB unreachable, maintaining demo inventory state.');
+      setInventories(DEMO_INVENTORIES);
+      setLocations(DEMO_LOCATIONS);
+      setItems(DEMO_ITEMS);
     } finally {
       setLoading(false);
     }

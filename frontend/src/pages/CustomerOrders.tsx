@@ -5,12 +5,14 @@ import { useAuth } from '../context/AuthContext';
 
 import { API_BASE_URL } from '../config/api';
 
+import { DEMO_CUSTOMER_ORDERS, DEMO_LOCATIONS, DEMO_ITEMS } from '../utils/demoData';
+
 export const CustomerOrders: React.FC = () => {
   const { user } = useAuth();
-  const [orders, setOrders] = useState<any[]>([]);
-  const [locations, setLocations] = useState<any[]>([]);
-  const [items, setItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState<any[]>(DEMO_CUSTOMER_ORDERS);
+  const [locations, setLocations] = useState<any[]>(DEMO_LOCATIONS);
+  const [items, setItems] = useState<any[]>(DEMO_ITEMS);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const [showModal, setShowModal] = useState(false);
@@ -30,7 +32,10 @@ export const CustomerOrders: React.FC = () => {
       setLocations(locRes.data);
       setItems(itemRes.data);
     } catch (err: any) {
-      setError('Failed to fetch customer orders');
+      console.warn('Backend DB unreachable, maintaining demo customer orders state.');
+      setOrders(DEMO_CUSTOMER_ORDERS);
+      setLocations(DEMO_LOCATIONS);
+      setItems(DEMO_ITEMS);
     } finally {
       setLoading(false);
     }

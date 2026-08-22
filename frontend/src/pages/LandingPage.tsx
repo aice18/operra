@@ -1,17 +1,14 @@
-import React from 'react';
 import {
   Boxes,
   ClipboardList,
   ArrowLeftRight,
   ShoppingBag,
   ShieldCheck,
-  BarChart3,
   CheckCircle2,
   ArrowRight,
   Database,
   Lock,
   ChevronRight,
-  Sparkles,
   Activity,
   Workflow
 } from 'lucide-react';
@@ -68,72 +65,95 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
         pointerEvents: 'none'
       }} />
 
-      {/* Navigation Header */}
+      {/* Redefined Premium Glassmorphism Navigation Header */}
       <header style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '1.75rem 4rem',
-        maxWidth: '1350px',
-        margin: '0 auto',
-        position: 'relative',
-        zIndex: 10
+        padding: '1.1rem 3.5rem',
+        maxWidth: '100%',
+        background: 'rgba(9, 4, 23, 0.75)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        borderBottom: '1px solid rgba(168, 85, 247, 0.18)',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.35)',
+        transition: 'all 0.3s ease'
       }}>
-        {/* Brand Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', cursor: 'pointer' }} onClick={onGoToLogin}>
+        {/* Brand Logo & Tag */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', cursor: 'pointer' }} onClick={onGoToLogin}>
           <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '0.75rem',
+            width: '44px',
+            height: '44px',
+            borderRadius: '0.85rem',
             background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 20px rgba(168, 85, 247, 0.5)',
-            border: '1px solid rgba(255, 255, 255, 0.2)'
+            boxShadow: '0 0 25px rgba(168, 85, 247, 0.6)',
+            border: '1px solid rgba(255, 255, 255, 0.25)'
           }}>
-            <Boxes size={22} color="#ffffff" />
+            <Boxes size={24} color="#ffffff" />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontWeight: 800, fontSize: '1.45rem', color: '#ffffff', letterSpacing: '-0.5px', lineHeight: 1.1 }}>Operra</span>
-            <span style={{ fontSize: '0.65rem', color: '#a855f7', fontWeight: 700, letterSpacing: '1px' }}>OPERATIONS ERP</span>
+            <span style={{ fontWeight: 900, fontSize: '1.5rem', color: '#ffffff', letterSpacing: '-0.5px', lineHeight: 1 }}>Operra</span>
+            <span style={{ fontSize: '0.65rem', color: '#a855f7', fontWeight: 700, letterSpacing: '1.2px', marginTop: '0.2rem' }}>OPERATIONS ERP</span>
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <nav style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
-          <a href="#overview" style={{ color: '#ffffff', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 600 }}>Overview</a>
-          <a href="#inventory" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>Inventory</a>
-          <a href="#work-orders" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>Work Orders</a>
-          <a href="#transfers" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>Stock Transfers</a>
-          <a href="#security" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', fontWeight: 500, transition: 'color 0.2s' }}>ACID Safety</a>
+        {/* Navigation Links matched exactly to Page Sections */}
+        <nav style={{
+          display: 'flex',
+          gap: '0.5rem',
+          alignItems: 'center',
+          background: 'rgba(23, 14, 45, 0.6)',
+          padding: '0.4rem 0.6rem',
+          borderRadius: '9999px',
+          border: '1px solid rgba(139, 92, 246, 0.2)'
+        }}>
+          <a href="#overview" style={{ color: '#e2e8f0', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, padding: '0.45rem 1rem', borderRadius: '9999px', background: 'rgba(124, 58, 237, 0.25)', border: '1px solid rgba(168, 85, 247, 0.3)', transition: 'all 0.2s ease' }}>
+            Overview
+          </a>
+          <a href="#lifecycle" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 500, padding: '0.45rem 1rem', borderRadius: '9999px', transition: 'all 0.2s ease' }}>
+            Modules Lifecycle
+          </a>
+          <a href="#security" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 500, padding: '0.45rem 1rem', borderRadius: '9999px', transition: 'all 0.2s ease' }}>
+            ACID Safety
+          </a>
+          <a href="#architecture" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 500, padding: '0.45rem 1rem', borderRadius: '9999px', transition: 'all 0.2s ease' }}>
+            Architecture
+          </a>
         </nav>
 
-        {/* CTA Login Button */}
-        <button
-          onClick={onGoToLogin}
-          style={{
-            padding: '0.75rem 1.8rem',
-            borderRadius: '0.6rem',
-            background: 'linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #9333ea 100%)',
-            color: '#ffffff',
-            border: 'none',
-            fontWeight: 700,
-            fontSize: '0.95rem',
-            cursor: 'pointer',
-            boxShadow: '0 4px 20px rgba(124, 58, 237, 0.5)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            transition: 'transform 0.2s ease, boxShadow 0.2s ease'
-          }}
-        >
-          Access ERP Portal <ChevronRight size={18} />
-        </button>
+        {/* CTA Login Button with Glow Effect */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <button
+            onClick={onGoToLogin}
+            style={{
+              padding: '0.75rem 1.75rem',
+              borderRadius: '0.65rem',
+              background: 'linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #9333ea 100%)',
+              color: '#ffffff',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              fontWeight: 700,
+              fontSize: '0.92rem',
+              cursor: 'pointer',
+              boxShadow: '0 4px 20px rgba(124, 58, 237, 0.55)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Access ERP Portal <ChevronRight size={18} />
+          </button>
+        </div>
       </header>
 
       {/* Hero Section */}
-      <section style={{
+      <section id="overview" style={{
         maxWidth: '1350px',
         margin: '0 auto',
         padding: '3.5rem 4rem 4rem',
@@ -146,22 +166,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
       }}>
         {/* Left Column Content */}
         <div>
-          {/* Top Pill Badge */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.4rem 1rem',
-            borderRadius: '9999px',
-            background: 'rgba(139, 92, 246, 0.12)',
-            border: '1px solid rgba(168, 85, 247, 0.3)',
-            color: '#c084fc',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            marginBottom: '1.5rem'
-          }}>
-            <Sparkles size={16} /> Enterprise Mini Operations ERP System
-          </div>
 
           <h1 style={{
             fontSize: '3.6rem',
@@ -323,7 +327,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
       </section>
 
       {/* Section 2: Core Modules Pipeline */}
-      <section style={{
+      <section id="lifecycle" style={{
         maxWidth: '1350px',
         margin: '2rem auto 6rem',
         padding: '0 4rem',
@@ -492,127 +496,306 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToLogin }) => {
         </div>
       </section>
 
-      {/* Section 3: Technical Highlights & ACID Protection */}
-      <section style={{
+      {/* Section 3: ACID Safety & Transactional Guarantees Deep Dive */}
+      <section id="security" style={{
         maxWidth: '1350px',
         margin: '0 auto 6rem',
         padding: '0 4rem',
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '4rem',
-        alignItems: 'center',
         position: 'relative',
         zIndex: 5
       }}>
-        {/* Left Column Content */}
-        <div>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: 800,
-            lineHeight: 1.25,
-            color: '#ffffff',
-            marginBottom: '1.5rem'
+        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.35rem 0.9rem',
+            borderRadius: '9999px',
+            background: 'rgba(16, 185, 129, 0.12)',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+            color: '#34d399',
+            fontSize: '0.85rem',
+            fontWeight: 700,
+            marginBottom: '1rem'
           }}>
-            Built for Extreme Precision,<br />
-            <span style={{ color: '#a855f7', textShadow: '0 0 20px rgba(168, 85, 247, 0.5)' }}>
-              Zero Data Corruptions
-            </span>
-          </h2>
-
-          <p style={{
-            fontSize: '1.05rem',
-            color: '#94a3b8',
-            lineHeight: 1.65,
-            marginBottom: '2rem',
-            maxWidth: '500px'
-          }}>
-            Operra enforces strict business rules at the database transaction boundary. Prevents negative inventory, duplicate transfer receipts, and unauthorized role operations.
-          </p>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <CheckCircle2 size={20} color="#34d399" />
-              <span style={{ fontSize: '0.95rem', color: '#e2e8f0' }}>Atomic Stock Dispatches & Destination Locking</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <CheckCircle2 size={20} color="#34d399" />
-              <span style={{ fontSize: '0.95rem', color: '#e2e8f0' }}>Backend Role-Based Access Control (Admin, Operations, Sales)</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <CheckCircle2 size={20} color="#34d399" />
-              <span style={{ fontSize: '0.95rem', color: '#e2e8f0' }}>Automated Shortage & Stock Availability Math</span>
-            </div>
+            <ShieldCheck size={16} /> Enterprise Reliability Architecture
           </div>
-
-          <button
-            onClick={onGoToLogin}
-            style={{
-              padding: '0.85rem 2rem',
-              borderRadius: '0.6rem',
-              background: 'linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%)',
-              color: '#ffffff',
-              border: 'none',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              cursor: 'pointer',
-              boxShadow: '0 4px 20px rgba(124, 58, 237, 0.4)'
-            }}
-          >
-            Launch Live Platform
-          </button>
+          <h2 style={{ fontSize: '2.6rem', fontWeight: 900, color: '#ffffff', marginBottom: '0.75rem' }}>
+            ACID-Guaranteed Transaction System
+          </h2>
+          <p style={{ color: '#94a3b8', fontSize: '1.05rem', maxWidth: '650px', margin: '0 auto' }}>
+            How Operra guarantees complete data integrity, zero phantom stock leaks, and race-condition immunity across distributed warehouse operations.
+          </p>
         </div>
 
-        {/* Right Column: Database Architectural Spec Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+        {/* 4 ACID Principles Cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '1.5rem',
+          marginBottom: '4rem'
+        }}>
+          {/* Atomicity */}
           <div style={{
             background: 'rgba(23, 14, 45, 0.75)',
-            border: '1px solid rgba(139, 92, 246, 0.25)',
+            border: '1px solid rgba(168, 85, 247, 0.25)',
             borderRadius: '1rem',
-            padding: '1.5rem'
+            padding: '1.75rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.85rem'
           }}>
-            <Database size={28} color="#38bdf8" style={{ marginBottom: '0.75rem' }} />
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.5rem' }}>Prisma & PostgreSQL</h4>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5 }}>
-              Strict relational schema with transactional consistency.
+            <div style={{
+              width: '45px',
+              height: '45px',
+              borderRadius: '0.65rem',
+              background: 'rgba(124, 58, 237, 0.2)',
+              border: '1px solid rgba(168, 85, 247, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#c084fc'
+            }}>
+              <Lock size={22} />
+            </div>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff' }}>Atomicity (A)</h3>
+            <p style={{ fontSize: '0.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
+              Stock transfer dispatch/receipt and reservation deductions execute in single, atomic database transactions (`prisma.$transaction`). All updates succeed together or roll back completely.
             </p>
           </div>
 
+          {/* Consistency */}
           <div style={{
             background: 'rgba(23, 14, 45, 0.75)',
-            border: '1px solid rgba(139, 92, 246, 0.25)',
+            border: '1px solid rgba(56, 189, 248, 0.25)',
             borderRadius: '1rem',
-            padding: '1.5rem'
+            padding: '1.75rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.85rem'
           }}>
-            <Lock size={28} color="#c084fc" style={{ marginBottom: '0.75rem' }} />
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.5rem' }}>JWT Auth & Roles</h4>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5 }}>
-              Secure backend route guards for Admin, Operations, and Sales.
+            <div style={{
+              width: '45px',
+              height: '45px',
+              borderRadius: '0.65rem',
+              background: 'rgba(6, 182, 212, 0.2)',
+              border: '1px solid rgba(56, 189, 248, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#38bdf8'
+            }}>
+              <Activity size={22} />
+            </div>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff' }}>Consistency (C)</h3>
+            <p style={{ fontSize: '0.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
+              Invariants are strictly preserved across all operations: `Available Stock = Physical Stock - Reserved Stock`. Negative physical or available quantities are blocked at DB level.
             </p>
           </div>
 
+          {/* Isolation */}
           <div style={{
             background: 'rgba(23, 14, 45, 0.75)',
-            border: '1px solid rgba(139, 92, 246, 0.25)',
+            border: '1px solid rgba(245, 158, 11, 0.25)',
             borderRadius: '1rem',
-            padding: '1.5rem'
+            padding: '1.75rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.85rem'
           }}>
-            <BarChart3 size={28} color="#fbbf24" style={{ marginBottom: '0.75rem' }} />
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.5rem' }}>Material Analytics</h4>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5 }}>
-              Instant visibility into material shortages across orders.
+            <div style={{
+              width: '45px',
+              height: '45px',
+              borderRadius: '0.65rem',
+              background: 'rgba(245, 158, 11, 0.2)',
+              border: '1px solid rgba(245, 158, 11, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fbbf24'
+            }}>
+              <Workflow size={22} />
+            </div>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff' }}>Isolation (I)</h3>
+            <p style={{ fontSize: '0.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
+              Concurrent customer order reservations lock target inventory rows during calculation, preventing dirty reads and race conditions when multiple sales reps reserve stock simultaneously.
             </p>
           </div>
 
+          {/* Durability */}
           <div style={{
             background: 'rgba(23, 14, 45, 0.75)',
-            border: '1px solid rgba(139, 92, 246, 0.25)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
             borderRadius: '1rem',
-            padding: '1.5rem'
+            padding: '1.75rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.85rem'
           }}>
-            <ShieldCheck size={28} color="#34d399" style={{ marginBottom: '0.75rem' }} />
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.5rem' }}>Automated Tests</h4>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5 }}>
-              Comprehensive test suite covering transactions & edge cases.
+            <div style={{
+              width: '45px',
+              height: '45px',
+              borderRadius: '0.65rem',
+              background: 'rgba(16, 185, 129, 0.2)',
+              border: '1px solid rgba(16, 185, 129, 0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#34d399'
+            }}>
+              <Database size={22} />
+            </div>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff' }}>Durability (D)</h3>
+            <p style={{ fontSize: '0.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
+              All committed state transitions (such as stock transfer receipts or work order updates) are written to persistent storage with full transaction log integrity.
+            </p>
+          </div>
+        </div>
+
+        {/* Live Architectural Diagram & Highlights */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '4rem',
+          alignItems: 'center'
+        }}>
+          <div>
+            <h3 style={{ fontSize: '2rem', fontWeight: 800, color: '#ffffff', marginBottom: '1.25rem' }}>
+              Idempotent Stock Receipts & RBAC Operations
+            </h3>
+            <p style={{ fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.65, marginBottom: '1.75rem' }}>
+              Operra enforces strict state machines on inter-warehouse transfers. Attempting to receive an already completed transfer (`RECEIVED`) returns an idempotent response without modifying inventory balances twice.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <CheckCircle2 size={20} color="#34d399" />
+                <span style={{ fontSize: '0.95rem', color: '#e2e8f0' }}>Strict 3-Stage Transfer: REQUESTED → DISPATCHED → RECEIVED</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <CheckCircle2 size={20} color="#34d399" />
+                <span style={{ fontSize: '0.95rem', color: '#e2e8f0' }}>Backend Role-Based Route Guards (Admin, Operations, Sales)</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <CheckCircle2 size={20} color="#34d399" />
+                <span style={{ fontSize: '0.95rem', color: '#e2e8f0' }}>Automated Shortage Computation for Production Scheduling</span>
+              </div>
+            </div>
+
+            <button
+              onClick={onGoToLogin}
+              style={{
+                padding: '0.85rem 2rem',
+                borderRadius: '0.6rem',
+                background: 'linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%)',
+                color: '#ffffff',
+                border: 'none',
+                fontWeight: 700,
+                fontSize: '0.95rem',
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(124, 58, 237, 0.4)'
+              }}
+            >
+              Access System Console
+            </button>
+          </div>
+
+          <div style={{
+            background: 'rgba(23, 14, 45, 0.85)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(168, 85, 247, 0.35)',
+            borderRadius: '1.25rem',
+            padding: '2rem',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5)'
+          }}>
+            <div style={{ fontSize: '0.85rem', color: '#a855f7', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '1rem' }}>
+              Visual Transfer Pipeline
+            </div>
+
+            {/* Stage 1 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(14, 7, 36, 0.9)', padding: '1rem', borderRadius: '0.75rem', border: '1px solid rgba(139, 92, 246, 0.2)', marginBottom: '0.75rem' }}>
+              <div style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', padding: '0.5rem 0.8rem', borderRadius: '0.5rem', fontWeight: 800, fontSize: '0.8rem' }}>1. REQUESTED</div>
+              <div style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>Source inventory physical balance remains untouched.</div>
+            </div>
+
+            {/* Stage 2 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(14, 7, 36, 0.9)', padding: '1rem', borderRadius: '0.75rem', border: '1px solid rgba(139, 92, 246, 0.2)', marginBottom: '0.75rem' }}>
+              <div style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24', padding: '0.5rem 0.8rem', borderRadius: '0.5rem', fontWeight: 800, fontSize: '0.8rem' }}>2. DISPATCHED</div>
+              <div style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>Source physical stock deducted atomically inside transaction.</div>
+            </div>
+
+            {/* Stage 3 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(14, 7, 36, 0.9)', padding: '1rem', borderRadius: '0.75rem', border: '1px solid rgba(16, 185, 129, 0.25)' }}>
+              <div style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', padding: '0.5rem 0.8rem', borderRadius: '0.5rem', fontWeight: 800, fontSize: '0.8rem' }}>3. RECEIVED</div>
+              <div style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>Destination inventory increased atomically. Idempotency enforced.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4: System Architecture & Entity Relationships */}
+      <section id="architecture" style={{
+        maxWidth: '1350px',
+        margin: '0 auto 6rem',
+        padding: '0 4rem',
+        position: 'relative',
+        zIndex: 5
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.35rem 0.9rem',
+            borderRadius: '9999px',
+            background: 'rgba(56, 189, 248, 0.12)',
+            border: '1px solid rgba(56, 189, 248, 0.3)',
+            color: '#38bdf8',
+            fontSize: '0.85rem',
+            fontWeight: 700,
+            marginBottom: '1rem'
+          }}>
+            <Database size={16} /> Relational Schema & Flow Architecture
+          </div>
+          <h2 style={{ fontSize: '2.6rem', fontWeight: 900, color: '#ffffff', marginBottom: '0.75rem' }}>
+            Core Data Relationships & System Flow
+          </h2>
+          <p style={{ color: '#94a3b8', fontSize: '1.05rem', maxWidth: '650px', margin: '0 auto' }}>
+            Understand how entities connect, how inventory is scoped per warehouse, and how operations trigger database updates across the ERP stack.
+          </p>
+        </div>
+
+        {/* 3 Main Architectural Layers */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '1.5rem',
+          marginBottom: '3rem'
+        }}>
+          {/* Layer 1: Access Control */}
+          <div style={{ background: 'rgba(23, 14, 45, 0.75)', border: '1px solid rgba(168, 85, 247, 0.25)', borderRadius: '1rem', padding: '1.75rem' }}>
+            <div style={{ fontSize: '0.8rem', color: '#c084fc', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem' }}>LAYER 1</div>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.75rem' }}>User & Location Scope</h3>
+            <p style={{ fontSize: '0.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
+              Every user (`ADMIN`, `OPERATIONS`, `SALES`) belongs to a primary warehouse `Location`. RBAC route guards restrict write operations to assigned warehouse scopes.
+            </p>
+          </div>
+
+          {/* Layer 2: Inventory Grid */}
+          <div style={{ background: 'rgba(23, 14, 45, 0.75)', border: '1px solid rgba(56, 189, 248, 0.25)', borderRadius: '1rem', padding: '1.75rem' }}>
+            <div style={{ fontSize: '0.8rem', color: '#38bdf8', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem' }}>LAYER 2</div>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.75rem' }}>Location-Item Matrix</h3>
+            <p style={{ fontSize: '0.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
+              `Inventory` rows form a composite relation linking `LocationId + ItemId + BatchNumber`. Formula: <code>Available = Physical - Reserved</code>.
+            </p>
+          </div>
+
+          {/* Layer 3: Transaction Engines */}
+          <div style={{ background: 'rgba(23, 14, 45, 0.75)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '1rem', padding: '1.75rem' }}>
+            <div style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem' }}>LAYER 3</div>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.75rem' }}>Atomic Action Handlers</h3>
+            <p style={{ fontSize: '0.88rem', color: '#94a3b8', lineHeight: 1.6 }}>
+              `WorkOrder` shortage checks, `InternalTransfer` dispatching, and `CustomerOrder` reservations process atomically inside Postgres transactions.
             </p>
           </div>
         </div>
